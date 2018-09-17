@@ -17,4 +17,12 @@ defmodule Toille.Parser do
 	"""
 	def print_with_color( line, color ), do: [color, line] |> Bunt.ANSI.format |> IO.puts
 
+	def display_tasks( tasks ) do
+		print_with_color( " \n Available Tasks: ", :color197 )
+		for payload <- tasks do
+			{ _, task } = payload
+			print_with_color( " 📌 #{task["status"]} Task<#{task["id"]}> #{task["title"]}", :color219 )
+		end
+	end
+
 end
