@@ -39,6 +39,8 @@ defmodule Toille.CliOperation do
 			"show" ->
 				execute_show_tasks()
     		cli()
+			"quit" ->
+				Parser.print_with_color " \n Le Toille App 🌟 Says: Goodbye!. \n", :color201
       _ ->
 				Parser.print_with_color " \n Le Toille App 🌟 Says: I can't understand you. \n", :color198
     		cli()
