@@ -6,7 +6,7 @@ defmodule EscriptDemo.Mixfile do
       app: :escript_demo,
       version: "0.1.0",
       elixir: "~> 1.5",
-      escript: [main_module: EscriptDemo],
+      escript: [main_module: Toille.Cli],
       start_permanent: Mix.env == :prod,
       deps: deps()
     ]
@@ -26,7 +26,8 @@ defmodule EscriptDemo.Mixfile do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
       {:bunt, "~> 0.1.0"},
       {:httpoison, "~> 1.0"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      { :elixir_uuid, "~> 1.2" }
     ]
   end
 end
