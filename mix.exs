@@ -3,7 +3,7 @@ defmodule EscriptDemo.Mixfile do
 
   def project do
     [
-      app: :escript_demo,
+      app: :le_etoile,
       version: "0.1.0",
       elixir: "~> 1.5",
       escript: [main_module: Toille.Cli],
