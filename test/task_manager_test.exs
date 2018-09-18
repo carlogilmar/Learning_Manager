@@ -20,4 +20,15 @@ defmodule Etoile.TaskManagerTest do
     assert doing_task["title"] == "titulo2"
     assert done_task["title"] == "titulo3"
   end
+
+  test "Filter task list by status without doing task" do
+    tasks = [
+      %{ "title" => "titulo1", "status" => "TODO" },
+      %{ "title" => "titulo3", "status" => "DONE" },
+      %{ "title" => "titulo3", "status" => "DONE" }
+    ]
+    response = TaskManager.filter_by_status( tasks )
+    IO.inspect response
+    assert "titulo2" == "titulo3"
+  end
 end
