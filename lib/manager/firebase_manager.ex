@@ -15,6 +15,7 @@ defmodule Etoile.FirebaseManager do
     Poison.decode!( response.body ) |> parser_payload
   end
 
+  def parser_payload( nil ), do: []
   def parser_payload( payload ) do
     for task <- payload do
       { id, attributes } = task
