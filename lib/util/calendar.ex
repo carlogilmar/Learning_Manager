@@ -28,4 +28,8 @@ defmodule Etoile.Calendar do
     ]
   end
 
+  def get_duration( end_time, start_time) do
+    ms = ((end_time - start_time) / 1000) / 60
+  end
+
 end
