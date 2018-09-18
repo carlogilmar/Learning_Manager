@@ -33,4 +33,10 @@ defmodule Etoile.FirebaseManager do
 		Parser.print_with_color "\n TASK #{task["title"]}... was set to: #{task["status"]} 🎉", :color214
   end
 
+  def delete_task( task_id ) do
+    { uuid, task }= show_tasks() |> TaskManager.find_task( task_id, "DELETE" )
+    "https://gameofchats-db1b4.firebaseio.com/tasks/#{uuid}.json" |> HTTPoison.delete
+		Parser.print_with_color "\n TASK #{task["title"]}... was DELETED! 🗑 ", :color214
+  end
+
 end
