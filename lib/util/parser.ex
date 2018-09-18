@@ -28,7 +28,7 @@ defmodule Etoile.Parser do
 
   def print( tasks, color, emoji ) do
 		for task <- tasks do
-      [:color172, " #{emoji} <#{task["id"]}> ", color, "  #{task["status"]}  #{task["title"]}"] |> print()
+      [:color172, " #{emoji} <#{task["id"]}>", :color75, " #{task["day"]}/#{task["month"]}", color, " #{task["status"]} :: #{task["title"]} ::"] |> print()
 		end
   end
 
