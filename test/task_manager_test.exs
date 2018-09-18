@@ -25,10 +25,9 @@ defmodule Etoile.TaskManagerTest do
     tasks = [
       %{ "title" => "titulo1", "status" => "TODO" },
       %{ "title" => "titulo3", "status" => "DONE" },
-      %{ "title" => "titulo3", "status" => "DONE" }
+      %{ "title" => "titulo3", "status" => "DONE Fakee" }
     ]
-    response = TaskManager.filter_by_status( tasks )
-    IO.inspect response
-    assert "titulo2" == "titulo3"
+    {_, doing, _} = TaskManager.filter_by_status( tasks )
+    assert doing == []
   end
 end
