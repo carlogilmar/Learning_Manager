@@ -32,4 +32,11 @@ defmodule Etoile.Parser do
 		end
   end
 
+  def show_wip( [] ), do: print_with_color( "\n There isn't a current task doing. 😳 ", :color198 )
+  def show_wip( doing_tasks ) do
+    for task <- doing_tasks do
+      [:color83, " \n .::: 💪 WORK IN PROGRESS :: <#{task["id"]}> #{task["title"]} :::."] |> print()
+    end
+  end
+
 end
