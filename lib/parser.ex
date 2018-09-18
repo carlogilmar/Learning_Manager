@@ -17,14 +17,19 @@ defmodule Etoile.Parser do
 	"""
 	def print_with_color( line, color ), do: [color, line] |> print
 
+  def print_tasks( { todos, doing, done } ) do
+		print_with_color( " \n Available Tasks: ", :color197 )
+    todos |> print( :color226 )
+    doing |> print( :color87 )
+    done |> print( :color198 )
+	end
+
   def print( line_with_color ), do: line_with_color |> Bunt.ANSI.format |> IO.puts
 
-	def display_tasks( tasks ) do
-		print_with_color( " \n Available Tasks: ", :color197 )
-		for payload <- tasks do
-			{ _, task } = payload
-      [:color172, "📌 <#{task["id"]}> ", :color105, " #{task["status"]} ", :color219, "#{task["title"]}"] |> print()
+  def print( tasks, color ) do
+		for task <- tasks do
+      [:color172, "📌 <#{task["id"]}> ", color, "  #{task["status"]}  #{task["title"]}"] |> print()
 		end
-	end
+  end
 
 end
