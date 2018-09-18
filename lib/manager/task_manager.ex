@@ -12,6 +12,10 @@ defmodule Etoile.TaskManager do
     { todos, doing, done }
   end
 
+  def get_wip( tasks )do
+    get_status( tasks, @doing )
+  end
+
   def get_status( tasks, status) do
     Enum.filter( tasks, fn task -> task["status"] == status end )
   end
