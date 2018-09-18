@@ -1,8 +1,12 @@
 defmodule Etoile.FirebaseManager do
 
-	def add_task( task ) do
-		payload = Poison.encode!(task)
-		{:ok, _} = HTTPoison.post "https://gameofchats-db1b4.firebaseio.com/tasks.json", payload
+  alias Etoile.TaskManager
+
+	def add_task( title ) do
+    task =
+      TaskManager.create_task( title )
+        |> Poison.encode!
+		{:ok, _} = HTTPoison.post "https://gameofchats-db1b4.firebaseio.com/tasks.json", task
 	end
 
   def show_tasks() do
