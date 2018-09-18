@@ -52,11 +52,10 @@ defmodule Etoile.CliOperation do
   	title =
 			IO.gets("\n 🌟 Task Description >>> ")
       |> Parser.parse_command()
-		task =
-			%{ id: Parser.get_uuid(),
-				 title: title,
-				 date_created: :os.system_time(:milli_seconds),
-				 status: "CREATED" } |> FirebaseManager.add_task
+    %{ id: Parser.get_uuid(),
+      title: title,
+      date_created: :os.system_time(:milli_seconds),
+      status: "CREATED" } |> FirebaseManager.add_task
 	end
 
   def execute_show_tasks() do
