@@ -13,11 +13,11 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "            Le Etoile App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " - h >> Show this menu ", :color50
-		Parser.print_with_color " - at >> Add task  ", :color214
-		Parser.print_with_color " - lt >> List tasks  ", :color214
+		Parser.print_with_color " - a >> Add task  ", :color214
+		Parser.print_with_color " - l >> List tasks  ", :color214
     Parser.print_with_color " - wip >> List current task in doing  ", :color214
-    Parser.print_with_color " - ut >> Update a task  ", :color214
-    Parser.print_with_color " - rt >> Remove a task  ", :color214
+    Parser.print_with_color " - u >> Update a task  ", :color214
+    Parser.print_with_color " - d >> Remove a task  ", :color214
     Parser.print_with_color " - q >> Quit Le Etoile App  ", :color161
 		Parser.print_with_color "-----------------------------------------", :color87
 		cli()
@@ -33,20 +33,20 @@ defmodule Etoile.CliOperation do
     case cmd do
       "h" ->
 				show_menu()
-			"at" ->
+			"a" ->
 				execute_add_task()
 				Parser.print_with_color " \n 😚 Task added.", :color46
     		cli()
-			"lt" ->
+			"l" ->
 				execute_show_tasks()
     		cli()
       "wip" ->
         get_wip_task()
         cli()
-      "ut" ->
+      "u" ->
         update_task()
         cli()
-      "rt" ->
+      "d" ->
         remove_task()
         cli()
 			"q" ->
