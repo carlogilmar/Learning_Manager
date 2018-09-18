@@ -1,5 +1,8 @@
 defmodule Etoile.TaskManager do
 
+  alias Etoile.Calendar
+  alias Etoile.Parser
+
   @todo "TODO"
   @doing "DOING"
   @done "DONE"
@@ -18,6 +21,12 @@ defmodule Etoile.TaskManager do
 
   def get_status( tasks, status) do
     Enum.filter( tasks, fn task -> task["status"] == status end )
+  end
+
+  def create_task( title ) do
+    { day, _, year, month } = Calendar.get_current_day
+    id = Parser.get_uuid()
+    %{ id: id, title: title, status: @todo, day: day, month: month, year: year }
   end
 
 end
