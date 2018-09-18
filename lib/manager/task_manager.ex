@@ -53,7 +53,7 @@ defmodule Etoile.TaskManager do
       |> Map.put("end_time", :os.system_time(:millisecond) )
   end
 
-  def get_updated_task( task, "TODO" ) do
+  def get_updated_task( task, _ ) do
     Map.put( task, "status", @todo)
       |> Map.delete("firebase_uuid")
       |> Map.delete("start_time")
