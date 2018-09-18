@@ -12,11 +12,12 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "            Le Etoile App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - h >> Show this menu ", :color49
+		Parser.print_with_color " - h >> Show this menu ", :color50
 		Parser.print_with_color " - at >> Add task  ", :color214
 		Parser.print_with_color " - lt >> List tasks  ", :color214
     Parser.print_with_color " - wip >> List current task in doing  ", :color214
     Parser.print_with_color " - ut >> Update a task  ", :color214
+    Parser.print_with_color " - rt >> Remove a task  ", :color214
     Parser.print_with_color " - q >> Quit Le Etoile App  ", :color161
 		Parser.print_with_color "-----------------------------------------", :color87
 		cli()
@@ -44,6 +45,9 @@ defmodule Etoile.CliOperation do
         cli()
       "ut" ->
         update_task()
+        cli()
+      "rt" ->
+        remove_task()
         cli()
 			"q" ->
 				Parser.print_with_color " \n Le Etoile App 🌟 Says: Goodbye!. \n", :color201
@@ -82,7 +86,13 @@ defmodule Etoile.CliOperation do
       |> Parser.parse_command()
       |> get_next_status()
     FirebaseManager.update_task( task_id, next_status )
-	end
+  end
+
+  def remove_task() do
+    IO.gets("\n Task ID >>> ")
+      |> Parser.parse_command()
+      |> FirebaseManager.delete_task()
+  end
 
   def get_next_status( status ) do
     case status do
