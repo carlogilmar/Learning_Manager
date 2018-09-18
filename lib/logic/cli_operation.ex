@@ -12,13 +12,10 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "            Le Etoile App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - menu >> Show this menu ", :color214
-		Parser.print_with_color " - show >> Show all tasks  ", :color214
-		Parser.print_with_color " - add >> Add a new task  ", :color214
-		#Parser.print_with_color " - wip >> Show the current task in progress ", :color214
-		#Parser.print_with_color " - finish >> End the current task ", :color214
-		#Parser.print_with_color " - edit >> Rename a task ", :color214
-		#Parser.print_with_color " - remove >> Remove a task ", :color214
+		Parser.print_with_color " - h >> Show this menu ", :color214
+		Parser.print_with_color " - at >> Add task  ", :color214
+		Parser.print_with_color " - lt >> List tasks  ", :color214
+    Parser.print_with_color " - wip >> List current task in doing  ", :color214
 		Parser.print_with_color "-----------------------------------------", :color87
 		cli()
   end
@@ -31,7 +28,7 @@ defmodule Etoile.CliOperation do
 
 	def execute( cmd ) do
     case cmd do
-      "m" ->
+      "h" ->
 				show_menu()
 			"at" ->
 				execute_add_task()
@@ -40,6 +37,9 @@ defmodule Etoile.CliOperation do
 			"lt" ->
 				execute_show_tasks()
     		cli()
+      "wip" ->
+        get_wip_task()
+        cli()
 			"quit" ->
 				Parser.print_with_color " \n Le Etoile App 🌟 Says: Goodbye!. \n", :color201
       _ ->
@@ -55,12 +55,18 @@ defmodule Etoile.CliOperation do
     %{ id: Parser.get_uuid(),
       title: title,
       date_created: :os.system_time(:milli_seconds),
-      status: "CREATED" } |> FirebaseManager.add_task
+      status: "TODO" } |> FirebaseManager.add_task
 	end
 
   def execute_show_tasks() do
     FirebaseManager.show_tasks
       |> TaskManager.filter_by_status
       |> Parser.print_tasks
+  end
+
+  def get_wip_task() do
+    FirebaseManager.show_tasks
+      |> TaskManager.get_wip
+      |> Parser.show_wip
   end
 end
