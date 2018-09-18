@@ -2,6 +2,7 @@ defmodule Etoile.CliOperation do
 
   alias Etoile.Parser
 	alias Etoile.FirebaseManager
+  alias Etoile.TaskManager
 
   def cli() do
     receive_command()
@@ -58,6 +59,9 @@ defmodule Etoile.CliOperation do
 				 status: "CREATED" } |> FirebaseManager.add_task
 	end
 
-	def execute_show_tasks(), do: FirebaseManager.show_tasks
-
+  def execute_show_tasks() do
+    FirebaseManager.show_tasks
+      |> TaskManager.filter_by_status
+      |> Parser.print_tasks
+  end
 end
