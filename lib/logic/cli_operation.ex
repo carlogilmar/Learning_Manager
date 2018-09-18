@@ -19,6 +19,7 @@ defmodule Etoile.CliOperation do
     Parser.print_with_color " - u >> Update a task  ", :color214
     Parser.print_with_color " - d >> Remove a task  ", :color214
     Parser.print_with_color " - q >> Quit Le Etoile App  ", :color161
+    Parser.print_with_color " - web >> Show the web app url  ", :color161
 		Parser.print_with_color "-----------------------------------------", :color87
 		cli()
   end
@@ -48,6 +49,9 @@ defmodule Etoile.CliOperation do
         cli()
       "d" ->
         remove_task()
+        cli()
+      "web" ->
+				Parser.print_with_color " \n Le Etoile App 🌟 Visit the Ember Aoo: https://le-etoile.herokuapp.com/. \n", :color201
         cli()
 			"q" ->
 				Parser.print_with_color " \n Le Etoile App 🌟 Says: Goodbye!. \n", :color201
