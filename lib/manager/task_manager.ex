@@ -36,8 +36,28 @@ defmodule Etoile.TaskManager do
   def prepare_for_update( [], _ ), do: Parser.print_with_color " \n Invalid Task ID", :color198
   def prepare_for_update( [ task ], status ) do
     firebase_uuid = task["firebase_uuid"]
-    task_updated = Map.put( task, "status", status ) |> Map.delete("firebase_uuid")
+    #task_updated = Map.put( task, "status", status ) |> Map.delete("firebase_uuid")
+    task_updated = get_updated_task( task, status )
     { firebase_uuid, task_updated }
+  end
+
+  def get_updated_task( task, "DOING" ) do
+    Map.put( task, "status", @doing)
+      |> Map.delete("firebase_uuid")
+      |> Map.put("start_time", :os.system_time(:millisecond) )
+  end
+
+  def get_updated_task( task, "DONE" ) do
+    Map.put( task, "status", @done)
+      |> Map.delete("firebase_uuid")
+      |> Map.put("end_time", :os.system_time(:millisecond) )
+  end
+
+  def get_updated_task( task, "TODO" ) do
+    Map.put( task, "status", @todo)
+      |> Map.delete("firebase_uuid")
+      |> Map.delete("start_time")
+      |> Map.delete("end_time")
   end
 
 end
