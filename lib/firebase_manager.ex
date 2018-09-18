@@ -1,6 +1,6 @@
-defmodule Toille.FirebaseManager do
+defmodule Etoile.FirebaseManager do
 
-  alias Toille.Parser
+  alias Etoile.Parser
 
 	def add_task( task ) do
 		payload = Poison.encode!(task)

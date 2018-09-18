@@ -1,7 +1,7 @@
-defmodule Toille.CliOperation do
+defmodule Etoile.CliOperation do
 
-  alias Toille.Parser
-	alias Toille.FirebaseManager
+  alias Etoile.Parser
+	alias Etoile.FirebaseManager
 
   def cli() do
     receive_command()
@@ -9,7 +9,7 @@ defmodule Toille.CliOperation do
 
   def show_menu() do
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color "            Le Toille App 🌟 !", :color228
+		Parser.print_with_color "            Le Etoile App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " - menu >> Show this menu ", :color214
 		Parser.print_with_color " - show >> Show all tasks  ", :color214
@@ -23,26 +23,26 @@ defmodule Toille.CliOperation do
   end
 
   def receive_command() do
-    IO.gets("\n 🌟 Le Toille App: How can I help you ? >>> ")
+    IO.gets("\n 🌟 >>> ")
       |> Parser.parse_command()
       |> execute()
   end
 
 	def execute( cmd ) do
     case cmd do
-      "menu" ->
+      "m" ->
 				show_menu()
-			"add" ->
+			"at" ->
 				execute_add_task()
 				Parser.print_with_color " \n 😚 Task added.", :color46
     		cli()
-			"show" ->
+			"lt" ->
 				execute_show_tasks()
     		cli()
 			"quit" ->
-				Parser.print_with_color " \n Le Toille App 🌟 Says: Goodbye!. \n", :color201
+				Parser.print_with_color " \n Le Etoile App 🌟 Says: Goodbye!. \n", :color201
       _ ->
-				Parser.print_with_color " \n Le Toille App 🌟 Says: I can't understand you. \n", :color198
+				Parser.print_with_color " \n Le Etoile App 🌟 Says: I can't understand you. \n", :color198
     		cli()
     end
 	end

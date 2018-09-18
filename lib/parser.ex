@@ -1,4 +1,4 @@
-defmodule Toille.Parser do
+defmodule Etoile.Parser do
 
   def get_uuid() do
     uuid = UUID.uuid1()
@@ -15,13 +15,15 @@ defmodule Toille.Parser do
 		iex> Parser.print_with_color "que onda!", :color253
 		For show colors visit: https://github.com/rrrene/bunt
 	"""
-	def print_with_color( line, color ), do: [color, line] |> Bunt.ANSI.format |> IO.puts
+	def print_with_color( line, color ), do: [color, line] |> print
+
+  def print( line_with_color ), do: line_with_color |> Bunt.ANSI.format |> IO.puts
 
 	def display_tasks( tasks ) do
 		print_with_color( " \n Available Tasks: ", :color197 )
 		for payload <- tasks do
 			{ _, task } = payload
-			print_with_color( " 📌 #{task["status"]} Task<#{task["id"]}> #{task["title"]}", :color219 )
+      [:color172, "📌 <#{task["id"]}> ", :color105, " #{task["status"]} ", :color219, "#{task["title"]}"] |> print()
 		end
 	end
 
