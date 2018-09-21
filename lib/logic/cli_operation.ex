@@ -1,4 +1,5 @@
 defmodule Etoile.CliOperation do
+  import Enum, only: [filter: 2]
 
   alias Etoile.Parser
 	alias Etoile.FirebaseManager
@@ -127,7 +128,7 @@ defmodule Etoile.CliOperation do
   end
 
   def get_todo_tasks( tasks ) do
-    Enum.filter( tasks, fn task -> task["status"] == "TODO" end )
+    filter( tasks, fn task -> task["status"] == "TODO" end )
   end
 
 end
