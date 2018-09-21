@@ -15,13 +15,14 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " - h >> Show this menu ", :color50
 		Parser.print_with_color " - a >> Add task  ", :color214
-		Parser.print_with_color " - todo >> TODO tasks  ", :color214
 		Parser.print_with_color " - l >> List tasks  ", :color214
-    Parser.print_with_color " - wip >> List current task in doing  ", :color214
     Parser.print_with_color " - u >> Update a task  ", :color214
     Parser.print_with_color " - d >> Remove a task  ", :color214
+    Parser.print_with_color " - done >> Add a DONE task", :color214
+    Parser.print_with_color " - wip >> List current task in doing  ", :color214
+		Parser.print_with_color " - todo >> TODO tasks  ", :color214
+    Parser.print_with_color " - web >> Show the web app url  ", :color214
     Parser.print_with_color " - q >> Quit Le Etoile App  ", :color161
-    Parser.print_with_color " - web >> Show the web app url  ", :color161
 		Parser.print_with_color "-----------------------------------------", :color87
 		cli()
   end
@@ -38,7 +39,6 @@ defmodule Etoile.CliOperation do
 				show_menu()
 			"a" ->
 				execute_add_task()
-				Parser.print_with_color " \n 😚 Task added.", :color46
     		cli()
 			"l" ->
 				execute_show_tasks()
@@ -58,6 +58,9 @@ defmodule Etoile.CliOperation do
       "web" ->
 				Parser.print_with_color " \n Le Etoile App 🌟 Visit the Ember Aoo: https://le-etoile.herokuapp.com/. \n", :color201
         cli()
+      "done" ->
+        add_done_task()
+        cli()
 			"q" ->
 				Parser.print_with_color " \n Le Etoile App 🌟 Says: Goodbye!. \n", :color201
       _ ->
@@ -70,7 +73,8 @@ defmodule Etoile.CliOperation do
   	title =
 			IO.gets("\n 🌟 Task Description >>> ")
       |> Parser.parse_command()
-    FirebaseManager.add_task( title )
+    TaskManager.create_task( title )
+      |> FirebaseManager.add_task()
 	end
 
   def execute_show_tasks() do
@@ -129,6 +133,18 @@ defmodule Etoile.CliOperation do
 
   def get_todo_tasks( tasks ) do
     filter( tasks, fn task -> task["status"] == "TODO" end )
+  end
+
+  def add_done_task() do
+  	title =
+			IO.gets("\n ✅ Task Done >>> " )
+      |> Parser.parse_command()
+    {duration, _} =
+			IO.gets("\n ⏳ Task Duration (min) >>> " )
+      |> Parser.parse_command()
+      |> Integer.parse()
+    TaskManager.add_todo_task( title, duration )
+      |> FirebaseManager.add_task()
   end
 
 end
