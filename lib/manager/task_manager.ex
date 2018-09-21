@@ -65,4 +65,14 @@ defmodule Etoile.TaskManager do
       |> Map.delete("end_time")
   end
 
+  def add_todo_task( title, duration) do
+    { day, _, year, month } = Calendar.get_current_day
+    id = Parser.get_uuid()
+    current_user = get_current_user()
+    minutes = (duration * 60) * 1000
+    end_time = :os.system_time(:millisecond)
+    start_time = end_time - minutes
+    %{ id: id, title: title, status: @done, day: day, month: month, year: year, user: current_user, start_time: start_time, end_time: end_time}
+  end
+
 end
