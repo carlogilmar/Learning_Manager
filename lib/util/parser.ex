@@ -32,13 +32,23 @@ defmodule Etoile.Parser do
     for task <- tasks do
       duration = Calendar.get_duration( task["end_time"], task["start_time"])
       minutes = Float.round( duration, 2)
-      [:color172, " #{emoji} <#{task["id"]}>", :color75, " #{task["day"]}/#{task["month"]}", color, " #{task["status"]} :: #{task["title"]} ::", :color165, " Finished in #{minutes} min."] |> print()
+      [:color172, " #{emoji} <#{task["id"]}>",
+       :color75, " #{task["day"]}/#{task["month"]}",
+       color, " #{task["status"]}",
+       :color172, " <#{task["user"]}>",
+       color, " :: #{task["title"]} ::",
+       :color165, " Finished in #{minutes} min."]
+       |> print()
 		end
   end
 
   def print( tasks, color, emoji ) do
 		for task <- tasks do
-      [:color172, " #{emoji} <#{task["id"]}>", :color75, " #{task["day"]}/#{task["month"]}", color, " #{task["status"]} :: #{task["title"]} ::"] |> print()
+      [:color172, " #{emoji} <#{task["id"]}>",
+       :color75, " #{task["day"]}/#{task["month"]}",
+       :color172, " <#{task["user"]}>",
+       color, " #{task["status"]} :: #{task["title"]} ::"]
+       |> print()
 		end
   end
 

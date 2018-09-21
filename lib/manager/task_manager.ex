@@ -26,7 +26,13 @@ defmodule Etoile.TaskManager do
   def create_task( title ) do
     { day, _, year, month } = Calendar.get_current_day
     id = Parser.get_uuid()
-    %{ id: id, title: title, status: @todo, day: day, month: month, year: year }
+    current_user = get_current_user()
+    %{ id: id, title: title, status: @todo, day: day, month: month, year: year, user: current_user }
+  end
+
+  def get_current_user() do
+    { user, _} = System.cmd("whoami", [])
+    Parser.parse_command( user )
   end
 
   def find_task( tasks, task_id, status ) do
@@ -36,7 +42,6 @@ defmodule Etoile.TaskManager do
   def prepare_for_update( [], _ ), do: Parser.print_with_color " \n Invalid Task ID", :color198
   def prepare_for_update( [ task ], status ) do
     firebase_uuid = task["firebase_uuid"]
-    #task_updated = Map.put( task, "status", status ) |> Map.delete("firebase_uuid")
     task_updated = get_updated_task( task, status )
     { firebase_uuid, task_updated }
   end
