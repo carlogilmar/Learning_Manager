@@ -1,5 +1,6 @@
 defmodule Etoile.TaskManager do
 
+  import Enum, only: [filter: 2]
   alias Etoile.Calendar
   alias Etoile.Parser
 
@@ -73,6 +74,10 @@ defmodule Etoile.TaskManager do
     end_time = :os.system_time(:millisecond)
     start_time = end_time - minutes
     %{ id: id, title: title, status: @done, day: day, month: month, year: year, user: current_user, start_time: start_time, end_time: end_time}
+  end
+
+  def get_todo_tasks( tasks ) do
+    filter( tasks, fn task -> task["status"] == "TODO" end )
   end
 
 end
