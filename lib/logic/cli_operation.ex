@@ -143,7 +143,7 @@ defmodule Etoile.CliOperation do
 			IO.gets("\n ⏳ Task Duration (min) >>> " )
       |> Parser.parse_command()
       |> Integer.parse()
-    TaskManager.add_todo_task( title, duration )
+    TaskManager.add_done_task( title, duration )
       |> FirebaseManager.add_task()
   end
 

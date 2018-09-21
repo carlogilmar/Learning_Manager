@@ -65,7 +65,7 @@ defmodule Etoile.TaskManager do
       |> Map.delete("end_time")
   end
 
-  def add_todo_task( title, duration) do
+  def add_done_task( title, duration) do
     { day, _, year, month } = Calendar.get_current_day
     id = Parser.get_uuid()
     current_user = get_current_user()
