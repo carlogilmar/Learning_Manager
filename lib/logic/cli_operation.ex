@@ -1,4 +1,5 @@
 defmodule Etoile.CliOperation do
+  import Enum, only: [filter: 2]
 
   alias Etoile.Parser
 	alias Etoile.FirebaseManager
@@ -14,6 +15,7 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " - h >> Show this menu ", :color50
 		Parser.print_with_color " - a >> Add task  ", :color214
+		Parser.print_with_color " - todo >> TODO tasks  ", :color214
 		Parser.print_with_color " - l >> List tasks  ", :color214
     Parser.print_with_color " - wip >> List current task in doing  ", :color214
     Parser.print_with_color " - u >> Update a task  ", :color214
@@ -43,6 +45,9 @@ defmodule Etoile.CliOperation do
     		cli()
       "wip" ->
         get_wip_task()
+        cli()
+      "todo" ->
+        show_todo_tasks()
         cli()
       "u" ->
         update_task()
@@ -114,6 +119,16 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color " 2) DOING ", :color87
 		Parser.print_with_color " 3) DONE ", :color87
 		Parser.print_with_color "-----------", :color214
+  end
+
+  def show_todo_tasks() do
+    FirebaseManager.show_tasks
+    |> get_todo_tasks
+    |> Parser.show_todo
+  end
+
+  def get_todo_tasks( tasks ) do
+    filter( tasks, fn task -> task["status"] == "TODO" end )
   end
 
 end
