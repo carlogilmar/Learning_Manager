@@ -162,4 +162,10 @@ defmodule Etoile.CliOperation do
       |> FirebaseManager.add_project()
   end
 
+  def choose_project() do
+    IO.gets("\n 📁  Choose Project ::: Id? >>>  " )
+      |> Parser.parse_command()
+      |> ProjectManager.find_project()
+  end
+
 end
