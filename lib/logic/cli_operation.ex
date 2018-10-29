@@ -13,21 +13,11 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "            Learning Manager App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - * p >> Show projects  ", :color214
-		Parser.print_with_color " - * ap >> Create new project ", :color214
+		Parser.print_with_color " (p) Show projects (ap) Create new project ", :color214
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - * a >> Add task  ", :color214
-		Parser.print_with_color " - * l >> List tasks  ", :color214
-    Parser.print_with_color " - * u >> Update a task  ", :color214
-    Parser.print_with_color " - * d >> Remove a task  ", :color214
+    Parser.print_with_color "(done) Add DONE task (wip) Show WIP (todo) Show TODO (web) Show web url", :color214
 		Parser.print_with_color "-----------------------------------------", :color87
-    Parser.print_with_color " - done >> Add a DONE task", :color214
-    Parser.print_with_color " - wip >> List current task in doing  ", :color214
-		Parser.print_with_color " - todo >> TODO tasks  ", :color214
-    Parser.print_with_color " - * web >> Show the web app url  ", :color214
-		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - * h >> Show this menu ", :color50
-    Parser.print_with_color " - * q >> Quit Le Etoile App  ", :color161
+    Parser.print_with_color " (h) Menu help (q) Quit app", :color87
 		cli()
   end
 
@@ -159,6 +149,7 @@ defmodule Etoile.CliOperation do
   def show_projects() do
     FirebaseManager.show_projects
     |> Parser.print_projects()
+    Parser.print_with_color " (a) Add task (l) List tasks (u) Update task (d) Delete task", :color214
   end
 
   def add_project() do
@@ -166,6 +157,7 @@ defmodule Etoile.CliOperation do
       |> Parser.parse_command()
       |> ProjectManager.add_project()
       |> FirebaseManager.add_project()
+    Parser.print_with_color " (a) Add task (l) List tasks (u) Update task (d) Delete task", :color214
   end
 
 end
