@@ -3,6 +3,7 @@ defmodule Etoile.CliOperation do
   alias Etoile.Parser
 	alias Etoile.FirebaseManager
   alias Etoile.TaskManager
+  alias Etoile.ProjectManager
 
   def cli() do
     receive_command()
@@ -12,18 +13,18 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "            Learning Manager App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - h >> Show this menu ", :color50
-		Parser.print_with_color " - p >> Show projects  ", :color214
-		Parser.print_with_color " - ap >> Add a new project  ", :color214
+		Parser.print_with_color " - * h >> Show this menu ", :color50
+		Parser.print_with_color " - * p >> Show projects  ", :color214
+		Parser.print_with_color " - * ap >> Add a new project  ", :color214
 		Parser.print_with_color " - a >> Add task  ", :color214
 		Parser.print_with_color " - l >> List tasks  ", :color214
     Parser.print_with_color " - u >> Update a task  ", :color214
-    Parser.print_with_color " - d >> Remove a task  ", :color214
+    Parser.print_with_color " - * d >> Remove a task  ", :color214
     Parser.print_with_color " - done >> Add a DONE task", :color214
     Parser.print_with_color " - wip >> List current task in doing  ", :color214
 		Parser.print_with_color " - todo >> TODO tasks  ", :color214
-    Parser.print_with_color " - web >> Show the web app url  ", :color214
-    Parser.print_with_color " - q >> Quit Le Etoile App  ", :color161
+    Parser.print_with_color " - * web >> Show the web app url  ", :color214
+    Parser.print_with_color " - * q >> Quit Le Etoile App  ", :color161
 		Parser.print_with_color "-----------------------------------------", :color87
 		cli()
   end
@@ -157,7 +158,7 @@ defmodule Etoile.CliOperation do
   def add_project() do
     IO.gets("\n 📁  New Project ::: >>>  " )
       |> Parser.parse_command()
-      |> TaskManager.add_project()
+      |> ProjectManager.add_project()
       |> FirebaseManager.add_project()
   end
 
