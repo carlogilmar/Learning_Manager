@@ -13,18 +13,21 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "            Learning Manager App 🌟 !", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " - * h >> Show this menu ", :color50
 		Parser.print_with_color " - * p >> Show projects  ", :color214
+		Parser.print_with_color " - * ap >> Create new project ", :color214
+		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " - * a >> Add task  ", :color214
 		Parser.print_with_color " - * l >> List tasks  ", :color214
     Parser.print_with_color " - * u >> Update a task  ", :color214
     Parser.print_with_color " - * d >> Remove a task  ", :color214
+		Parser.print_with_color "-----------------------------------------", :color87
     Parser.print_with_color " - done >> Add a DONE task", :color214
     Parser.print_with_color " - wip >> List current task in doing  ", :color214
 		Parser.print_with_color " - todo >> TODO tasks  ", :color214
     Parser.print_with_color " - * web >> Show the web app url  ", :color214
-    Parser.print_with_color " - * q >> Quit Le Etoile App  ", :color161
 		Parser.print_with_color "-----------------------------------------", :color87
+		Parser.print_with_color " - * h >> Show this menu ", :color50
+    Parser.print_with_color " - * q >> Quit Le Etoile App  ", :color161
 		cli()
   end
 
