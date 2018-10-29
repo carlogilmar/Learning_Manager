@@ -67,4 +67,10 @@ defmodule Etoile.Parser do
     end
   end
 
+  def print_projects( projects ) do
+    for project <- projects do
+      [:color83, "<#{project["project_id"]}> #{project["project_name"]}"] |> print()
+    end
+  end
+
 end
