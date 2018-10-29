@@ -80,4 +80,9 @@ defmodule Etoile.TaskManager do
     filter( tasks, fn task -> task["status"] == "TODO" end )
   end
 
+  def add_project( project_name ) do
+    id = Parser.get_uuid()
+    %{ project_id: id, project_name: project_name }
+  end
+
 end

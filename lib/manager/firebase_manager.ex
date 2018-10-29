@@ -45,4 +45,10 @@ defmodule Etoile.FirebaseManager do
     Poison.decode!( response.body ) |> parser_payload
   end
 
+  def add_project( project ) do
+    encoded_project = project |> Poison.encode!
+		{:ok, _} = HTTPoison.post "#{@firebase_api}/projects.json", encoded_project
+    Parser.print_with_color " \n 😚 Project added.", :color46
+  end
+
 end
