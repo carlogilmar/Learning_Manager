@@ -20,7 +20,7 @@ defmodule Etoile.Parser do
 	def print_with_color( line, color ), do: [color, line] |> print
 
   def print_tasks( { todos, doing, done } ) do
-		print_with_color( " \n Available Tasks: ", :color197 )
+		print_with_color( " Available Tasks: ", :color197 )
     todos |> print( :color226, "📌" )
     doing |> print( :color87, "⭐️" )
     done |> print( {:color198, "😎"} )
