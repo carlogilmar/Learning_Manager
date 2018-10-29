@@ -12,4 +12,13 @@ defmodule Etoile.ProjectManager do
     Enum.filter( projects, fn project -> project["project_id"] == project_id end )
   end
 
+  def choose_project() do
+    # TODO: this is broken when select an fail id
+    [ project ] =
+    IO.gets("\n 📁  Choose Project ::: Id? >>>  " )
+      |> Parser.parse_command()
+      |> find_project()
+    project
+  end
+
 end

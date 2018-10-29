@@ -77,10 +77,12 @@ defmodule Etoile.CliOperation do
 	end
 
 	def execute_add_task() do
+    project = ProjectManager.choose_project()
+    Parser.print_with_color "\n Project Selected: #{project["project_name"]}", :color201
   	title =
 			IO.gets("\n 🌟 Task Description >>> ")
       |> Parser.parse_command()
-    TaskManager.create_task( title )
+    TaskManager.create_task( title, project )
       |> FirebaseManager.add_task()
 	end
 
@@ -160,12 +162,6 @@ defmodule Etoile.CliOperation do
       |> Parser.parse_command()
       |> ProjectManager.add_project()
       |> FirebaseManager.add_project()
-  end
-
-  def choose_project() do
-    IO.gets("\n 📁  Choose Project ::: Id? >>>  " )
-      |> Parser.parse_command()
-      |> ProjectManager.find_project()
   end
 
 end

@@ -24,11 +24,11 @@ defmodule Etoile.TaskManager do
     Enum.filter( tasks, fn task -> task["status"] == status end )
   end
 
-  def create_task( title ) do
+  def create_task( title, project ) do
     { day, _, year, month } = Calendar.get_current_day
     id = Parser.get_uuid()
     current_user = get_current_user()
-    %{ id: id, title: title, status: @todo, day: day, month: month, year: year, user: current_user }
+    %{ id: id, title: title, status: @todo, day: day, month: month, year: year, user: current_user, project: project["project_id"] }
   end
 
   def get_current_user() do
