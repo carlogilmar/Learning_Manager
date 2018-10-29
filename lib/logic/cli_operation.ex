@@ -34,6 +34,12 @@ defmodule Etoile.CliOperation do
 
 	def execute( cmd ) do
     case cmd do
+      "projects" ->
+        show_projects()
+        cli()
+      "add_taks" ->
+        add_task_to_project()
+        cli()
       "h" ->
 				show_menu()
 			"a" ->
@@ -139,6 +145,14 @@ defmodule Etoile.CliOperation do
       |> Integer.parse()
     TaskManager.add_done_task( title, duration )
       |> FirebaseManager.add_task()
+  end
+
+  def show_projects() do
+    FirebaseManager.show_projects
+    |> Parser.print_projects()
+  end
+
+  def add_task_to_project() do
   end
 
 end
