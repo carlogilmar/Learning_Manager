@@ -48,7 +48,7 @@ defmodule Etoile.FirebaseManager do
   def add_project( project ) do
     encoded_project = project |> Poison.encode!
 		{:ok, _} = HTTPoison.post "#{@firebase_api}/projects.json", encoded_project
-    Parser.print_with_color " \n 😚 Project added.", :color46
+    Parser.print_with_color " 😚 Project added.", :color46
   end
 
 end

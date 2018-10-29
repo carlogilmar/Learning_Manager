@@ -90,7 +90,7 @@ defmodule Etoile.CliOperation do
 
   def execute_show_tasks() do
     project = ProjectManager.choose_project()
-    Parser.print_with_color "\n Project Selected: #{project["project_name"]}", :color201
+    Parser.print_with_color "Project Selected: #{project["project_name"]}", :color201
     FirebaseManager.show_tasks
       |> TaskManager.filter_by_status( project["project_id"] )
       |> Parser.print_tasks
@@ -162,7 +162,7 @@ defmodule Etoile.CliOperation do
   end
 
   def add_project() do
-    IO.gets("\n 📁  New Project ::: >>>  " )
+    IO.gets(" 📁  New Project ::: >>>  " )
       |> Parser.parse_command()
       |> ProjectManager.add_project()
       |> FirebaseManager.add_project()
