@@ -7,7 +7,7 @@ defmodule Etoile.FirebaseManager do
 	def add_task( task ) do
     encoded_task =  task  |> Poison.encode!
 		{:ok, _} = HTTPoison.post "https://gameofchats-db1b4.firebaseio.com/tasks.json", encoded_task
-    Parser.print_with_color " \n 😚 Task added.", :color46
+    Parser.print_with_color " 😚 Task added.", :color46
 	end
 
   def show_tasks() do

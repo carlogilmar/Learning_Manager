@@ -15,10 +15,13 @@ defmodule Etoile.ProjectManager do
   def choose_project() do
     # TODO: this is broken when select an fail id
     [ project ] =
-    IO.gets("\n 📁  Choose Project ::: Id? >>>  " )
+    IO.gets(" 📁  Choose Project ::: Id? >>>  " )
       |> Parser.parse_command()
       |> find_project()
     project
   end
 
+  def filter_tasks_by_project( tasks, project_id) do
+    Enum.filter( tasks, fn task -> task["project"] == project_id end )
+  end
 end

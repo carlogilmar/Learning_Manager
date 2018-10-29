@@ -15,10 +15,9 @@ defmodule Etoile.CliOperation do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " - * h >> Show this menu ", :color50
 		Parser.print_with_color " - * p >> Show projects  ", :color214
-		Parser.print_with_color " - * ap >> Add a new project  ", :color214
-		Parser.print_with_color " - a >> Add task  ", :color214
-		Parser.print_with_color " - l >> List tasks  ", :color214
-    Parser.print_with_color " - u >> Update a task  ", :color214
+		Parser.print_with_color " - * a >> Add task  ", :color214
+		Parser.print_with_color " - * l >> List tasks  ", :color214
+    Parser.print_with_color " - * u >> Update a task  ", :color214
     Parser.print_with_color " - * d >> Remove a task  ", :color214
     Parser.print_with_color " - done >> Add a DONE task", :color214
     Parser.print_with_color " - wip >> List current task in doing  ", :color214
@@ -78,17 +77,19 @@ defmodule Etoile.CliOperation do
 
 	def execute_add_task() do
     project = ProjectManager.choose_project()
-    Parser.print_with_color "\n Project Selected: #{project["project_name"]}", :color201
+    Parser.print_with_color " Project Selected: #{project["project_name"]}", :color201
   	title =
-			IO.gets("\n 🌟 Task Description >>> ")
+			IO.gets(" 🌟 Task Description >>> ")
       |> Parser.parse_command()
     TaskManager.create_task( title, project )
       |> FirebaseManager.add_task()
 	end
 
   def execute_show_tasks() do
+    project = ProjectManager.choose_project()
+    Parser.print_with_color "\n Project Selected: #{project["project_name"]}", :color201
     FirebaseManager.show_tasks
-      |> TaskManager.filter_by_status
+      |> TaskManager.filter_by_status( project["project_id"] )
       |> Parser.print_tasks
   end
 

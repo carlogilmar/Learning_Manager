@@ -3,16 +3,18 @@ defmodule Etoile.TaskManager do
   import Enum, only: [filter: 2]
   alias Etoile.Calendar
   alias Etoile.Parser
+  alias Etoile.ProjectManager
 
   @todo "TODO"
   @doing "DOING"
   @done "DONE"
 
   # Status: TODO, DOING, DONE
-  def filter_by_status( tasks ) do
-    todos = get_status( tasks, @todo )
-    doing = get_status( tasks, @doing )
-    done = get_status( tasks, @done )
+  def filter_by_status( tasks, project ) do
+    tasks_from_project = ProjectManager.filter_tasks_by_project( tasks, project )
+    todos = get_status( tasks_from_project, @todo )
+    doing = get_status( tasks_from_project, @doing )
+    done = get_status( tasks_from_project, @done )
     { todos, doing, done }
   end
 
