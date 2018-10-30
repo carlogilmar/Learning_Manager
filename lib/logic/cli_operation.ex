@@ -29,10 +29,10 @@ defmodule Etoile.CliOperation do
 
 	def execute( cmd ) do
     case cmd do
-      "projects" ->
+      "p" ->
         show_projects()
         cli()
-      "create" ->
+      "ap" ->
         add_project()
         cli()
       "h" ->
