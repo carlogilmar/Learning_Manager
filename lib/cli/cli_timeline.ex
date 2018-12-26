@@ -4,19 +4,20 @@ defmodule Etoile.Cli.CliTimeline do
 	alias Etoile.FirebaseManager
   alias Etoile.TaskManager
   alias Etoile.ProjectManager
-  alias Etoile.Util.Timeline
+  alias Etoile.CalendarUtil
+  alias Etoile.TimelineManager
 
   def cli( user ), do: receive_command( user )
 
   def display_menu( user ) do
-    Timeline.print_current_day()
-    Timeline.print_current_week()
+    CalendarUtil.print_current_day()
+    CalendarUtil.print_current_week()
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " 1. Add current week as timeline         ", :color228
 		Parser.print_with_color " 2. List timelines stored                ", :color228
 		Parser.print_with_color " 3. Show timeline                        ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-    Parser.print_with_color " (h) Menu help (q) Quit app", :color87
+    Parser.print_with_color " (q) Quit app", :color87
 		cli( user )
   end
 
@@ -29,7 +30,7 @@ defmodule Etoile.Cli.CliTimeline do
 	def execute( cmd, user ) do
     case cmd do
       "1" ->
-        IO.puts "Add timeline"
+        TimelineManager.create( user["username"] )
         cli(user)
       "2" ->
         IO.puts "List timelines"
