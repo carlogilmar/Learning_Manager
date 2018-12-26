@@ -1,4 +1,4 @@
-defmodule Etoile.CliSession do
+defmodule Etoile.Cli.CliSession do
 
   alias Etoile.Parser
   alias Etoile.UserManager

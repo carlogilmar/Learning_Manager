@@ -1,4 +1,4 @@
-defmodule Etoile.CliTimeline do
+defmodule Etoile.Cli.CliTimeline do
 
   alias Etoile.Parser
 	alias Etoile.FirebaseManager

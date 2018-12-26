@@ -1,7 +1,7 @@
 defmodule Etoile.Cli do
 
-  alias Etoile.CliTimeline
-  alias Etoile.CliSession
+  alias Etoile.Cli.CliTimeline
+  alias Etoile.Cli.CliSession
   alias Etoile.Parser
   alias Etoile.UserManager
 
