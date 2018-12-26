@@ -1,4 +1,4 @@
-defmodule Etoile.Calendar do
+defmodule Etoile.CalendarUtil do
 
   def get_current_day() do
     date = Date.utc_today
