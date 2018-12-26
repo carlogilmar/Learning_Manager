@@ -23,7 +23,7 @@ defmodule Etoile.Cli do
   defp send_start_msg( username ) do
 		Parser.print_with_color " Learning Manager 🌟    ", :color228
     Parser.print_with_color " - - - - - - - - - - - -", :color87
-    Parser.print_with_color " Login with #{username} ", :color228
+    Parser.print_with_color " Login as #{username} ", :color228
   end
 
   defp send_error_msg() do

@@ -33,10 +33,9 @@ defmodule Etoile.Cli.CliTimeline do
         TimelineManager.create( user["username"] )
         cli(user)
       "2" ->
-        IO.puts "List timelines"
+        TimelineManager.get_all_from_user( user["username"] )
         cli(user)
       "3" ->
-        IO.puts "Show timeline"
         cli(user)
       "h" ->
         display_menu(user)

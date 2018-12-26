@@ -43,4 +43,22 @@ defmodule Etoile.TimelineManager do
     end
   end
 
+  def get_all_from_user( username ) do
+    res =
+      RequestManager.get("/timelines.json")
+        |> Enum.filter( fn {_id, timeline} -> timeline["username"] == username end )
+    case res do
+      nil ->
+        Parser.print_with_color " [ You don't have timelines. ]", :color228
+      [] ->
+		    Parser.print_with_color " [ Add a timeline for start to use it. ]", :color228
+      timelines ->
+        timelines
+          |> Enum.sort_by( fn {_id, timeline} -> timeline["week"]  end)
+          |> Enum.each( fn {_id, timeline} ->
+            Parser.print_with_color " - Timeline Week #{timeline["week"]} Year #{timeline["year"]}", :color229
+          end)
+    end
+  end
+
 end

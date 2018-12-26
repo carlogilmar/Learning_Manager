@@ -43,7 +43,7 @@ defmodule Etoile.CalendarUtil do
   def print_current_day() do
     {year, month, day, week} = get_current_date()
     [{spanish_month, _m}] = get_spanish_month( month )
-    Parser.print_with_color " Week #{week} :: #{day}-#{spanish_month} #{year}", :color201
+    Parser.print_with_color " Week #{week} :: Today is #{day}-#{spanish_month} #{year}", :color201
   end
 
   def print_current_week( year, week ) do
