@@ -4,10 +4,13 @@ defmodule Etoile.Cli.CliTimeline do
 	alias Etoile.FirebaseManager
   alias Etoile.TaskManager
   alias Etoile.ProjectManager
+  alias Etoile.Util.Timeline
 
   def cli( user ), do: receive_command( user )
 
   def display_menu( user ) do
+    Timeline.print_current_day()
+    Timeline.print_current_week()
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " 1. Add current week as timeline         ", :color228
 		Parser.print_with_color " 2. List timelines stored                ", :color228
@@ -40,13 +43,5 @@ defmodule Etoile.Cli.CliTimeline do
     		cli(user)
     end
 	end
-
-  #iex(3)> {:ok, date} = Calendar.DateTime.now("America/Mexico_City")
-  #{:ok, #DateTime<2018-12-25 23:37:26.115723-06:00 CST America/Mexico_City>}
-  #iex(4)> date
-  ##DateTime<2018-12-25 23:37:26.115723-06:00 CST America/Mexico_City>
-  #iex(5)> Calendar.Date.week_number date
-  #{2018, 52}
-  #Calendar.Date.dates_for_week_number {2018, 52}
 
 end
