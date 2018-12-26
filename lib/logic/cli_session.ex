@@ -16,6 +16,8 @@ defmodule Etoile.CliSession do
   def register_username( username ) do
 		Parser.print_with_color "   Sign up new user... wait...           ", :color228
     UserManager.create_user( username )
+    #TODO: Validate that this user isn't in the database
+    #TODO: Validate format: only one word, in lowercase, < 15 characters
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "   User Registered.                      ", :color228
 		Parser.print_with_color "   Please login with your username:      ", :color228

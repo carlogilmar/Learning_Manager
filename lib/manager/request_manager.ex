@@ -9,4 +9,9 @@ defmodule Etoile.RequestManager do
     Parser.print_with_color " Request Succesfull ...", :color46
 	end
 
+  def get( uri ) do
+		response = HTTPoison.get! "#{@firebase_api}#{uri}"
+    Poison.decode!( response.body )
+  end
+
 end
