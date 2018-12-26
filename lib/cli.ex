@@ -1,6 +1,6 @@
 defmodule Etoile.Cli do
 
-  alias Etoile.CliOperation
+  alias Etoile.CliTimeline
   alias Etoile.CliSession
   alias Etoile.Parser
   alias Etoile.UserManager
@@ -15,7 +15,7 @@ defmodule Etoile.Cli do
       {:not_found, _msg} ->
         send_not_found_msg( username )
       {:user_found, user} ->
-        CliOperation.cli( user )
+        CliTimeline.display_menu( user )
     end
   end
   def start_cli(_args), do: send_error_msg()
