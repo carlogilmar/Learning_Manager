@@ -14,12 +14,14 @@ defmodule EscriptDemo.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger, :calendar]
     ]
   end
 
   defp deps do
     [
+      {:tzdata, "~> 0.1.7"},
+      {:calendar, "~> 0.17.2"},
       {:bunt, "~> 0.1.0"},
       {:httpoison, "~> 1.0"},
       {:poison, "~> 3.1"},
