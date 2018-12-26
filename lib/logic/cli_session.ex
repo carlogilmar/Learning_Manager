@@ -1,6 +1,7 @@
 defmodule Etoile.CliSession do
 
   alias Etoile.Parser
+  alias Etoile.UserManager
 
   def cli() do
 		Parser.print_with_color "-----------------------------------------", :color87
@@ -10,14 +11,11 @@ defmodule Etoile.CliSession do
     IO.gets("\n 🌟 >>> ")
       |> Parser.parse_command()
       |> register_username()
-
   end
 
   def register_username( username ) do
 		Parser.print_with_color "   Sign up new user... wait...           ", :color228
-    user = %{ username: username }
-    user_encoded = user  |> Poison.encode!
-    {:ok, _payload} = HTTPoison.post "https://gameofchats-db1b4.firebaseio.com/users.json", user_encoded
+    UserManager.create_user( username )
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color "   User Registered.                      ", :color228
 		Parser.print_with_color "   Please login with your username:      ", :color228
