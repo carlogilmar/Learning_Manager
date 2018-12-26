@@ -6,7 +6,6 @@ defmodule Etoile.RequestManager do
 	def post( uri, payload) do
     encoded = payload |> Poison.encode!
 		{:ok, _} = HTTPoison.post "#{@firebase_api}#{uri}", encoded
-    Parser.print_with_color " Request Succesfull ...", :color46
 	end
 
   def get( uri ) do
