@@ -29,7 +29,7 @@ defmodule Etoile.Cli.CliTimeline do
   end
 
   def receive_command(), do: IO.gets("\n 🌟 >>> ") |> Parser.parse_command()
-  def receive_command( prompt ), do: IO.gets("\n #{prompt}") |> Parser.parse_command()
+  def receive_command( prompt ), do: IO.gets("  #{prompt}") |> Parser.parse_command()
 
 	def execute( cmd, user ) do
     case cmd do
