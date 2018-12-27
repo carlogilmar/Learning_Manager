@@ -4,34 +4,57 @@ defmodule Etoile.TaskManager do
   alias Etoile.Calendar
   alias Etoile.Parser
   alias Etoile.ProjectManager
+  alias Etoile.RequestManager
+  alias Etoile.TimelineManager
+  alias Etoile.CalendarUtil
 
   @todo "TODO"
   @doing "DOING"
   @done "DONE"
 
-  # Status: TODO, DOING, DONE
-  def filter_by_status( tasks, project ) do
-    tasks_from_project = ProjectManager.filter_tasks_by_project( tasks, project )
-    todos = get_status( tasks_from_project, @todo )
-    doing = get_status( tasks_from_project, @doing )
-    done = get_status( tasks_from_project, @done )
+  def create_task( title, label, user ) do
+    [{_id, timeline}] = TimelineManager.find_active_timeline( user )
+    {_year, _month, day, _week} = CalendarUtil.get_current_date()
+    id = Parser.get_uuid()
+    task = %{ id: id, title: title, status: @todo, day: day, week: timeline["week"], year: timeline["year"], user: user, label: label }
+    RequestManager.post("/tasks.json", task)
+  end
+
+  def list_tasks_per_status( user ) do
+    [{_id, timeline}] = TimelineManager.find_active_timeline( user )
+    tasks = RequestManager.get("/tasks.json")
+    user_tasks = Enum.filter( tasks, fn {_id, task} ->
+                                                      task["user"] == user and
+                                                      task["week"] == timeline["week"] and
+                                                      task["year"] == timeline["year"] end)
+    todos = get_status( user_tasks, @todo )
+    doing = get_status( user_tasks, @doing )
+    done = get_status( user_tasks, @done )
     { todos, doing, done }
   end
+
+  def get_status( tasks, status), do: Enum.filter( tasks, fn {_id, task} -> task["status"] == status end )
+
+  def display_tasks_per_status( user ) do
+    { todos, doing, done } = list_tasks_per_status( user )
+    display_task( todos, :color204 )
+    display_task( doing, :color229 )
+    display_task( done, :color158 )
+  end
+
+  defp display_task( tasks, color ) do
+    Enum.each( tasks, fn {_id, task} ->
+     Parser.print_with_color " #{task["status"]} <#{task["label"]}> #{task["title"]}", color
+    end)
+  end
+
+  ##### Deprecated
 
   def get_wip( tasks )do
     get_status( tasks, @doing )
   end
 
-  def get_status( tasks, status) do
-    Enum.filter( tasks, fn task -> task["status"] == status end )
-  end
 
-  def create_task( title, project ) do
-    { day, _, year, month } = Calendar.get_current_day
-    id = Parser.get_uuid()
-    current_user = get_current_user()
-    %{ id: id, title: title, status: @todo, day: day, month: month, year: year, user: current_user, project: project["project_id"] }
-  end
 
   def get_current_user() do
     { user, _} = System.cmd("whoami", [])
@@ -50,9 +73,9 @@ defmodule Etoile.TaskManager do
   end
 
   def get_updated_task( task, "DOING" ) do
-    Map.put( task, "status", @doing)
-      |> Map.delete("firebase_uuid")
-      |> Map.put("start_time", :os.system_time(:millisecond) )
+    #Map.put( task, "status", @doing)
+    # todos rser.print_with_color " \n Invalid Task ID", :color198 |> Map.delete("firebase_uuid")
+    #  |> Map.put("start_time", :os.system_time(:millisecond) )
   end
 
   def get_updated_task( task, "DONE" ) do
