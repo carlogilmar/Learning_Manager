@@ -2,6 +2,8 @@ defmodule Etoile.Cli.CliWorker do
 
   alias Etoile.Parser
   alias Etoile.Cli.CliTimeline
+  alias Etoile.TagManager
+  alias Etoile.NoteManager
 
   def cli( user ) do
     execute_command( user )
@@ -19,7 +21,7 @@ defmodule Etoile.Cli.CliWorker do
     Parser.print_with_color " Current Timeline ", :color87
     Parser.print_with_color " 1. Add task ", :color87
     Parser.print_with_color " 2. Add budget ", :color87
-    Parser.print_with_color " 3. Add note ", :color87
+    Parser.print_with_color " (3) Add note (4) List notes ", :color87
     Parser.print_with_color " 0. Return ", :color87
     execute_command( user )
   end
@@ -33,7 +35,13 @@ defmodule Etoile.Cli.CliWorker do
         IO.puts " Adding budget"
         cli( user )
       "3" ->
-        IO.puts " Adding note"
+        TagManager.list_labels( user["username"] )
+        note = receive_command(" Write your note >> ")
+        label = receive_command(" Label >> ")
+        NoteManager.save_note( user["username"], note, label)
+        cli( user )
+      "4" ->
+        NoteManager.list_notes( user["username"] )
         cli( user )
       "0" ->
         CliTimeline.cli( user )

@@ -27,6 +27,14 @@ defmodule Etoile.TimelineManager do
   end
 
   def find_active_timeline( username ) do
+    RequestManager.get("/timelines.json")
+    |> Enum.filter(
+      fn {_id, timeline} ->
+        timeline["username"] == username
+        and timeline["status"] == "ACTIVE" end )
+  end
+
+  def print_active_timeline( username ) do
     res =
       RequestManager.get("/timelines.json")
         |> Enum.filter(

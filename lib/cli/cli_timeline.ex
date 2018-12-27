@@ -10,7 +10,7 @@ defmodule Etoile.Cli.CliTimeline do
 
   def display_menu( user ) do
     CalendarUtil.print_current_day()
-    TimelineManager.find_active_timeline( user["username"] )
+    TimelineManager.print_active_timeline( user["username"] )
 		Parser.print_with_color "-----------------------------------------", :color87
     Parser.print_with_color " 1. Add current week as timeline [ok]        ", :color228
 		Parser.print_with_color " 2. List timelines stored [ok]               ", :color228
