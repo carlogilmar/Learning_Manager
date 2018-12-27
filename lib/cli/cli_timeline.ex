@@ -29,6 +29,7 @@ defmodule Etoile.Cli.CliTimeline do
   end
 
   def receive_command(), do: IO.gets("\n 🌟 >>> ") |> Parser.parse_command()
+  def receive_command( prompt ), do: IO.gets("\n #{prompt}") |> Parser.parse_command()
 
 	def execute( cmd, user ) do
     case cmd do
@@ -43,13 +44,15 @@ defmodule Etoile.Cli.CliTimeline do
       "4" ->
         cli(user)
       "5" ->
-        TagManager.add_label( user["username"] )
+        add_label_msg()
+          |> TagManager.add_label( user["username"] )
         cli(user)
       "6" ->
         TagManager.list_labels( user["username"] )
         cli(user)
       "7" ->
-        TagManager.add_place( user["username"] )
+        add_place_msg()
+          |> TagManager.add_place( user["username"] )
         cli(user)
       "8" ->
         TagManager.list_places( user["username"] )
@@ -57,10 +60,13 @@ defmodule Etoile.Cli.CliTimeline do
       "h" ->
         display_menu(user)
 			"q" ->
-				Parser.print_with_color " \n Learning Manager Goodbye!. \n", :color201
+				Parser.print_with_color " \n Learning Manager Goodbye! \n", :color201
       _ ->
     		cli(user)
     end
 	end
+
+  defp add_label_msg(), do: receive_command( " Label name >>> " )
+  defp add_place_msg(), do: receive_command( " Place name >>> " )
 
 end
