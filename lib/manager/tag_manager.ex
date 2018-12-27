@@ -32,7 +32,7 @@ defmodule Etoile.TagManager do
   def display_in_console( tags ) do
     tags_for_show = for {_id, tag} <- tags, do: tag["name"]
     tags_from_user = Enum.join( tags_for_show, " - " )
-    Parser.print_with_color "#{tags_from_user}", :color228
+    Parser.print_with_color "   #{tags_from_user}  ", :color228
   end
 
 end

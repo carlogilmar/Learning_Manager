@@ -9,18 +9,20 @@ defmodule Etoile.Cli.CliTimeline do
   def cli( user ), do: execute_command( user )
 
   def display_menu( user ) do
+		Parser.print_with_color " 🏠 HOME ", :color75
+		Parser.print_with_color " Welcome #{user["username"]}", :color51
     CalendarUtil.print_current_day()
     TimelineManager.print_active_timeline( user["username"] )
 		Parser.print_with_color "-----------------------------------------", :color87
-    Parser.print_with_color " 1. Add current week as timeline [ok]        ", :color228
-		Parser.print_with_color " 2. List timelines stored [ok]               ", :color228
-		Parser.print_with_color " 3. Operate current timeline                ", :color228
-		Parser.print_with_color " 4. Show a timeline                      ", :color228
+		Parser.print_with_color " 1. Start 🔧 ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " (5) Add label (6) Show labels   [ok]        ", :color228
-		Parser.print_with_color " (7) Add places (8) Show places     [ok]     ", :color228
+    Parser.print_with_color " 2. Add current week as timeline ", :color228
+		Parser.print_with_color " 3. List timelines stored ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-    Parser.print_with_color " (h) Show menu (q) Quit app", :color87
+		Parser.print_with_color " Labels (5) New (6) List ", :color228
+		Parser.print_with_color " Places (7) New (8) List ", :color228
+		Parser.print_with_color "-----------------------------------------", :color87
+    Parser.print_with_color " (h) Help (q) Quit ", :color87
 		cli( user )
   end
 
@@ -29,20 +31,18 @@ defmodule Etoile.Cli.CliTimeline do
       |> execute( user )
   end
 
-  def receive_command(), do: IO.gets("\n 🌟 >>> ") |> Parser.parse_command()
+  def receive_command(), do: IO.gets("\n 🏠 >>> ") |> Parser.parse_command()
   def receive_command( prompt ), do: IO.gets("  #{prompt}") |> Parser.parse_command()
 
 	def execute( cmd, user ) do
     case cmd do
       "1" ->
+        CliWorker.display_operate_current_timeline( user )
+      "2" ->
         TimelineManager.create( user["username"] )
         cli(user)
-      "2" ->
-        TimelineManager.get_all_from_user( user["username"] )
-        cli(user)
       "3" ->
-        CliWorker.display_operate_current_timeline( user )
-      "4" ->
+        TimelineManager.get_all_from_user( user["username"] )
         cli(user)
       "5" ->
         display_label_msg()
