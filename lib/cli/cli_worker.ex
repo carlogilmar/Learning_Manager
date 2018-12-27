@@ -46,6 +46,15 @@ defmodule Etoile.Cli.CliWorker do
 			"l" ->
 				execute_show_tasks(user["username"])
     		cli(user)
+			"todo" ->
+				execute_show_todo(user["username"])
+    		cli(user)
+			"wip" ->
+				execute_show_wip(user["username"])
+    		cli(user)
+      "done" ->
+				execute_show_done(user["username"])
+    		cli(user)
       #"wip" ->
       #  get_wip_tasks()
       #  cli()
@@ -95,5 +104,8 @@ defmodule Etoile.Cli.CliWorker do
 	end
 
   def execute_show_tasks( user ), do: TaskManager.display_tasks_per_status( user )
+  def execute_show_todo( user ), do: TaskManager.display_tasks_per_status( user, "TODO" )
+  def execute_show_wip( user ), do: TaskManager.display_tasks_per_status( user, "DOING" )
+  def execute_show_done( user ), do: TaskManager.display_tasks_per_status( user, "DONE" )
 
 end

@@ -42,13 +42,22 @@ defmodule Etoile.TaskManager do
     display_task( done, :color158 )
   end
 
+  def display_tasks_per_status( user, status ) do
+    { todos, doing, done } = list_tasks_per_status( user )
+    case status do
+      "TODO" -> display_task( todos, :color204 )
+      "DOING" -> display_task( doing, :color229 )
+      "DONE" -> display_task( done, :color158 )
+    end
+  end
+
   defp display_task( tasks, color ) do
     Enum.each( tasks, fn {_id, task} ->
      Parser.print_with_color " #{task["status"]} <#{task["label"]}> #{task["title"]}", color
     end)
   end
 
-  ##### Deprecated
+  ##### Deprecated ================================================================00
 
   def get_wip( tasks )do
     get_status( tasks, @doing )
