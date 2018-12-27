@@ -13,6 +13,15 @@ defmodule Etoile.NoteManager do
   end
 
   def list_notes( username ) do
+    [{_id, timeline}] = TimelineManager.find_active_timeline( username )
+    notes =
+      RequestManager.get("/notes.json")
+      |> Enum.filter( fn {_id, note} -> note["week"] == timeline["week"]
+                                 and note["year"] == timeline["year"]
+                                 and note["username"] == username  end)
+    Enum.each( notes, fn {_id, note} ->
+      Parser.print_with_color " <#{note["label"]}> #{note["note"]}", :color87
+    end)
   end
 
 end
