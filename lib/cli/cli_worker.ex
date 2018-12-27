@@ -4,7 +4,6 @@ defmodule Etoile.Cli.CliWorker do
   alias Etoile.TagManager
   alias Etoile.NoteManager
   alias Etoile.BudgetManager
-	alias Etoile.FirebaseManager
   alias Etoile.TaskManager
   alias Etoile.Parser
   alias Etoile.CalendarUtil
@@ -14,7 +13,7 @@ defmodule Etoile.Cli.CliWorker do
   end
 
   def execute_command( user ) do
-    receive_command
+    receive_command()
       |> execute( user )
   end
 
@@ -55,10 +54,10 @@ defmodule Etoile.Cli.CliWorker do
 				execute_show_done(user["username"])
     		cli(user)
       "u" ->
-        update_task(user["username"])
+        update_task()
         cli(user)
       "d" ->
-        remove_task(user["username"])
+        remove_task()
         cli(user)
       "1" ->
         TagManager.list_labels( user["username"] )
@@ -98,7 +97,7 @@ defmodule Etoile.Cli.CliWorker do
   def execute_show_wip( user ), do: TaskManager.display_tasks_per_status( user, "DOING" )
   def execute_show_done( user ), do: TaskManager.display_tasks_per_status( user, "DONE" )
 
-  def update_task( user ) do
+  def update_task( ) do
   	task_id =
 			IO.gets("\n Task ID >>> ")
       |> Parser.parse_command()
@@ -127,7 +126,7 @@ defmodule Etoile.Cli.CliWorker do
     end
   end
 
-  def remove_task( user ) do
+  def remove_task( ) do
   	task_id =
 			IO.gets("\n Task ID >>> ")
       |> Parser.parse_command()

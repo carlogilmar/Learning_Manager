@@ -1,9 +1,7 @@
 defmodule Etoile.TaskManager do
 
-  import Enum, only: [filter: 2]
   alias Etoile.Calendar
   alias Etoile.Parser
-  alias Etoile.ProjectManager
   alias Etoile.RequestManager
   alias Etoile.TimelineManager
   alias Etoile.CalendarUtil
@@ -73,68 +71,6 @@ defmodule Etoile.TaskManager do
       RequestManager.get("/tasks.json")
         |> Enum.filter( fn {_id, task} -> task["id"] == id end)
     task
-  end
-
-  ##### Deprecated ================================================================00
-
-  def get_wip( tasks )do
-    get_status( tasks, @doing )
-  end
-
-
-
-  def get_current_user() do
-    { user, _} = System.cmd("whoami", [])
-    Parser.parse_command( user )
-  end
-
-  def find_task( tasks, task_id, status ) do
-    Enum.filter( tasks, fn task -> task["id"] == task_id end ) |> prepare_for_update( status )
-  end
-
-  def prepare_for_update( [], _ ), do: Parser.print_with_color " \n Invalid Task ID", :color198
-  def prepare_for_update( [ task ], status ) do
-    firebase_uuid = task["firebase_uuid"]
-    task_updated = get_updated_task( task, status )
-    { firebase_uuid, task_updated }
-  end
-
-  def get_updated_task( task, "DOING" ) do
-    #Map.put( task, "status", @doing)
-    # todos rser.print_with_color " \n Invalid Task ID", :color198 |> Map.delete("firebase_uuid")
-    #  |> Map.put("start_time", :os.system_time(:millisecond) )
-  end
-
-  def get_updated_task( task, "DONE" ) do
-    Map.put( task, "status", @done)
-      |> Map.delete("firebase_uuid")
-      |> Map.put("end_time", :os.system_time(:millisecond) )
-  end
-
-  def get_updated_task( task, _ ) do
-    Map.put( task, "status", @todo)
-      |> Map.delete("firebase_uuid")
-      |> Map.delete("start_time")
-      |> Map.delete("end_time")
-  end
-
-  def add_done_task( title, duration) do
-    { day, _, year, month } = Calendar.get_current_day
-    id = Parser.get_uuid()
-    current_user = get_current_user()
-    minutes = (duration * 60) * 1000
-    end_time = :os.system_time(:millisecond)
-    start_time = end_time - minutes
-    %{ id: id, title: title, status: @done, day: day, month: month, year: year, user: current_user, start_time: start_time, end_time: end_time}
-  end
-
-  def get_todo_tasks( tasks ) do
-    filter( tasks, fn task -> task["status"] == "TODO" end )
-  end
-
-  def add_project( project_name ) do
-    id = Parser.get_uuid()
-    %{ project_id: id, project_name: project_name }
   end
 
 end
