@@ -14,9 +14,14 @@ defmodule Etoile.Cli.CliTimeline do
     CalendarUtil.print_current_day()
     TimelineManager.print_active_timeline( user["username"] )
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " 1. Start 🔧 ", :color228
+    active = TimelineManager.find_active_timeline( user["username"] )
+    case active do
+      [] ->
+        Parser.print_with_color " 2. Add current week as timeline ", :color228
+      _active ->
+        Parser.print_with_color " 1. Start 🔧 ", :color228
+    end
 		Parser.print_with_color "-----------------------------------------", :color87
-    Parser.print_with_color " 2. Add current week as timeline ", :color228
 		Parser.print_with_color " 3. List timelines stored ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " Labels (5) New (6) List ", :color228
@@ -40,7 +45,7 @@ defmodule Etoile.Cli.CliTimeline do
         CliWorker.display_operate_current_timeline( user )
       "2" ->
         TimelineManager.create( user["username"] )
-        cli(user)
+        display_menu(user)
       "3" ->
         TimelineManager.get_all_from_user( user["username"] )
         cli(user)
