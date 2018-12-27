@@ -13,4 +13,13 @@ defmodule Etoile.RequestManager do
     Poison.decode!( response.body )
   end
 
+  def put( uri, payload ) do
+    encoded = payload |> Poison.encode!
+		{:ok, _} = HTTPoison.put "#{@firebase_api}#{uri}", encoded
+  end
+
+  def delete( uri ) do
+		{:ok, _} = HTTPoison.delete "#{@firebase_api}#{uri}"
+  end
+
 end

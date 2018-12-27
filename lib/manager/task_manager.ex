@@ -53,8 +53,26 @@ defmodule Etoile.TaskManager do
 
   defp display_task( tasks, color ) do
     Enum.each( tasks, fn {_id, task} ->
-     Parser.print_with_color " #{task["status"]} <#{task["label"]}> #{task["title"]}", color
+     Parser.print_with_color " #{task["id"]} #{task["status"]} <#{task["label"]}> #{task["title"]}", color
     end)
+  end
+
+  def update_task_status( task_id, next_status) do
+    {id_in_api, task} = find_task( task_id )
+    task = Map.put( task, "status", next_status )
+    RequestManager.put( "/tasks/#{id_in_api}.json", task)
+  end
+
+  def remove_task( task_id ) do
+    {id_in_api, _task} = find_task( task_id )
+    RequestManager.delete("/tasks/#{id_in_api}.json")
+  end
+
+  def find_task( id ) do
+    [task] =
+      RequestManager.get("/tasks.json")
+        |> Enum.filter( fn {_id, task} -> task["id"] == id end)
+    task
   end
 
   ##### Deprecated ================================================================00

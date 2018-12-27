@@ -54,12 +54,12 @@ defmodule Etoile.Cli.CliWorker do
       "done" ->
 				execute_show_done(user["username"])
     		cli(user)
-      #"u" ->
-      #  update_task()
-      #  cli()
-      #"d" ->
-      #  remove_task()
-      #  cli()
+      "u" ->
+        update_task(user["username"])
+        cli(user)
+      "d" ->
+        remove_task(user["username"])
+        cli(user)
       "1" ->
         TagManager.list_labels( user["username"] )
         note = receive_command(" 🔖 >> ")
@@ -98,4 +98,39 @@ defmodule Etoile.Cli.CliWorker do
   def execute_show_wip( user ), do: TaskManager.display_tasks_per_status( user, "DOING" )
   def execute_show_done( user ), do: TaskManager.display_tasks_per_status( user, "DONE" )
 
+  def update_task( user ) do
+  	task_id =
+			IO.gets("\n Task ID >>> ")
+      |> Parser.parse_command()
+    show_update_menu()
+    next_status =
+			IO.gets("\n Status >>> ")
+      |> Parser.parse_command()
+      |> get_next_status()
+    TaskManager.update_task_status( task_id, next_status )
+  end
+
+  def show_update_menu() do
+		Parser.print_with_color " Update task: Choose next status ", :color214
+		Parser.print_with_color "-----------", :color214
+		Parser.print_with_color " 1) TODO 2) DOING 3) DONE ", :color87
+		Parser.print_with_color "-----------", :color214
+  end
+
+  def get_next_status( status ) do
+    case status do
+      "1" -> "TODO"
+      "2" -> "DOING"
+      "3" -> "DONE"
+      _ ->
+				Parser.print_with_color " \n Status invalid! \n", :color198
+    end
+  end
+
+  def remove_task( user ) do
+  	task_id =
+			IO.gets("\n Task ID >>> ")
+      |> Parser.parse_command()
+    TaskManager.remove_task( task_id )
+  end
 end
