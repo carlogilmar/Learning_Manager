@@ -19,6 +19,11 @@ defmodule Etoile.NoteManager do
       |> Enum.filter( fn {_id, note} -> note["week"] == timeline["week"]
                                  and note["year"] == timeline["year"]
                                  and note["username"] == username  end)
+      |> print_notes()
+  end
+
+  defp print_notes( [] ), do: Parser.print_with_color " Not found. ", :color87
+  defp print_notes( notes ) do
     Enum.each( notes, fn {_id, note} ->
       Parser.print_with_color " <#{note["label"]}> #{note["note"]}", :color87
     end)
