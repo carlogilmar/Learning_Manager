@@ -3,8 +3,8 @@ defmodule EscriptDemo.Mixfile do
 
   def project do
     [
-      app: :le_etoile,
-      version: "0.1.0",
+      app: :learning_manager,
+      version: "1.1.0",
       elixir: "~> 1.5",
       escript: [main_module: Etoile.Cli],
       start_permanent: Mix.env == :prod,
