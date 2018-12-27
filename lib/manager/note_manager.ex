@@ -14,8 +14,7 @@ defmodule Etoile.NoteManager do
 
   def list_notes( username ) do
     [{_id, timeline}] = TimelineManager.find_active_timeline( username )
-    notes =
-      RequestManager.get("/notes.json")
+    RequestManager.get("/notes.json")
       |> Enum.filter( fn {_id, note} -> note["week"] == timeline["week"]
                                  and note["year"] == timeline["year"]
                                  and note["username"] == username  end)
