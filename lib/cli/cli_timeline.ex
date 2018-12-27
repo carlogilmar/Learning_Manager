@@ -4,6 +4,7 @@ defmodule Etoile.Cli.CliTimeline do
   alias Etoile.CalendarUtil
   alias Etoile.TimelineManager
   alias Etoile.TagManager
+  alias Etoile.Cli.CliWorker
 
   def cli( user ), do: execute_command( user )
 
@@ -13,11 +14,11 @@ defmodule Etoile.Cli.CliTimeline do
 		Parser.print_with_color "-----------------------------------------", :color87
     Parser.print_with_color " 1. Add current week as timeline [ok]        ", :color228
 		Parser.print_with_color " 2. List timelines stored [ok]               ", :color228
-		Parser.print_with_color " 3. Show current timeline                ", :color228
+		Parser.print_with_color " 3. Operate current timeline                ", :color228
 		Parser.print_with_color " 4. Show a timeline                      ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " (5) Add label (6) Show labels           ", :color228
-		Parser.print_with_color " (7) Add places (8) Show places          ", :color228
+		Parser.print_with_color " (5) Add label (6) Show labels   [ok]        ", :color228
+		Parser.print_with_color " (7) Add places (8) Show places     [ok]     ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
     Parser.print_with_color " (h) Show menu (q) Quit app", :color87
 		cli( user )
@@ -40,18 +41,18 @@ defmodule Etoile.Cli.CliTimeline do
         TimelineManager.get_all_from_user( user["username"] )
         cli(user)
       "3" ->
-        cli(user)
+        CliWorker.display_operate_current_timeline( user )
       "4" ->
         cli(user)
       "5" ->
-        add_label_msg()
+        display_label_msg()
           |> TagManager.add_label( user["username"] )
         cli(user)
       "6" ->
         TagManager.list_labels( user["username"] )
         cli(user)
       "7" ->
-        add_place_msg()
+        display_place_msg()
           |> TagManager.add_place( user["username"] )
         cli(user)
       "8" ->
@@ -66,7 +67,7 @@ defmodule Etoile.Cli.CliTimeline do
     end
 	end
 
-  defp add_label_msg(), do: receive_command( " Label name >>> " )
-  defp add_place_msg(), do: receive_command( " Place name >>> " )
+  defp display_label_msg(), do: receive_command( " Label name >>> " )
+  defp display_place_msg(), do: receive_command( " Place name >>> " )
 
 end
