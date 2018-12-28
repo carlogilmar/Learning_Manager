@@ -37,50 +37,50 @@ defmodule Etoile.Cli.CliWorker do
   end
 
   def execute( cmd, user ) do
+    cmd = String.split( cmd, " ")
     case cmd do
-			"new" ->
+			["new"] ->
         TagManager.list_labels( user["username"] )
 				execute_add_task(user["username"])
     		cli(user)
-			"all" ->
+			["all"] ->
 				execute_show_tasks(user["username"])
     		cli(user)
-			"todo" ->
+			["todo"] ->
 				execute_show_todo(user["username"])
     		cli(user)
-			"wip" ->
+			["wip"] ->
 				execute_show_wip(user["username"])
     		cli(user)
-      "done" ->
+      ["done"] ->
 				execute_show_done(user["username"])
     		cli(user)
-      "u" ->
+      ["u"] ->
         update_task()
         cli(user)
-      "d" ->
+      ["d"] ->
         remove_task()
         cli(user)
-      "new_note" ->
+      ["new_note"] ->
         TagManager.list_labels( user["username"] )
         note = receive_command(" 🔖 >> ")
         label = receive_command(" Choose label >> ")
-        Parser.print_with_color "  - - - - - - - - - - - -  - ", :color52
+        Parser.print_with_color "  - - - - - - - - - - - -  - ", :color228
         NoteManager.save_note( user["username"], note, label)
         cli( user )
-      "list_notes" ->
+      ["list_notes"] ->
         NoteManager.list_notes( user["username"] )
         cli( user )
-      "new_budget" ->
-        budget = receive_command(" 💵 >> ")
-        BudgetManager.add_budget( budget, user["username"] )
-        Parser.print_with_color "  - - - - - - - - - - - -  - ", :color52
+      ["new_budget"] ->
+        BudgetManager.add_budget( price, user["username"] )
+        Parser.print_with_color "  - - - - - - - - - - - -  - ", :color228
         cli( user )
-      "list_budgets" ->
+      ["list_budgets"] ->
         BudgetManager.list_budgets( user["username"] )
         cli( user )
-      "h" ->
+      ["h"] ->
         display_operate_current_timeline( user )
-      "q" ->
+      ["q"] ->
         CliTimeline.cli( user )
       _ ->
         cli( user )
