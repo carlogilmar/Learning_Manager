@@ -9,18 +9,19 @@ defmodule Etoile.BudgetManager do
   def add_budget( price, desc, username ) do
     [{_id, timeline}] = TimelineManager.find_active_timeline( username )
     {_year, _month, day, _week} = CalendarUtil.get_current_date()
-    budget = %{ username: username, price: price, description: desc, week: timeline["week"], year: timeline["year"], day: day}
+    budget = %Budget{ username: username, price: price, description: desc, week: timeline["week"], year: timeline["year"], day: day}
     RequestManager.post("/budgets.json", budget)
   end
 
-  def list_budgets( username ) do
+  def get_budgets( username ) do
     [{_id, timeline}] = TimelineManager.find_active_timeline( username )
     RequestManager.get("/budgets.json")
       |> Enum.filter( fn {_id, budget} -> budget["week"] == timeline["week"]
                                  and budget["year"] == timeline["year"]
                                  and budget["username"] == username  end)
-      |> print_budgets()
   end
+
+  def list_budgets( username ), do: get_budgets(username) |> print_budgets()
 
   defp print_budgets( [] ), do: Parser.print_with_color " Not found. ", :color228
   defp print_budgets( budgets ) do
@@ -33,9 +34,13 @@ defmodule Etoile.BudgetManager do
     display_total( budgets )
   end
 
-  def display_total( budgets ) do
+  def get_total( budgets ) do
     prices = for {_id, budget} <- budgets, do: String.to_integer( budget["price"] )
-    total = prices |> Enum.sum
+    prices |> Enum.sum
+  end
+
+  def display_total( budgets ) do
+    total = get_total( budgets )
     Parser.print_with_color " Balance: #{total} ", :color87
   end
 

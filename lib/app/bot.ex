@@ -3,10 +3,11 @@ defmodule Etoile.Bot do
   @bot :simple_bot
   def bot(), do: @bot
   use ExGram.Bot, name: @bot
-  alias Etoile.TimelineManager
+  alias Etoile.TelegramCommand
   require Logger
 
   command("timeline")
+
   command("budgets")
   command("notes")
   command("all")
@@ -16,12 +17,13 @@ defmodule Etoile.Bot do
   middleware(ExGram.Middleware.IgnoreUsername)
 
   def handle({:command, :timeline, %{text: username}}, cnt) do
-    timeline = get_active_timeline( username )
+    timeline = TelegramCommand.get_active_timeline( username )
     cnt |> answer( timeline )
   end
 
-  def handle({:command, :budgets, %{text: _text}}, cnt) do
-    cnt |> answer(" \n Active Timeline \n Here\n Here::")
+  def handle({:command, :budgets, %{text: username}}, cnt) do
+    budgets = TelegramCommand.get_budgets( username )
+    cnt |> answer( budgets )
   end
 
   def handle({:command, :notes, %{text: _text}}, cnt) do
@@ -44,13 +46,5 @@ defmodule Etoile.Bot do
     cnt |> answer(" \n Active Timeline \n Here\n Here::")
   end
 
-  defp get_active_timeline( "" ), do: " Learning Manager :: Adding your current username "
-  defp get_active_timeline( username ) do
-    [{_id, active}] = TimelineManager.find_active_timeline( username )
-    case active do
-      [] -> " \n There isn't an active timeline. Please register timeline in learning manager."
-      _active -> " \n Active Timeline \n Username: #{username} \n Week #{active["week"]} - #{active["year"]}"
-    end
-  end
 
 end
