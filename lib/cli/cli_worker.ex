@@ -22,7 +22,7 @@ defmodule Etoile.Cli.CliWorker do
 
   def display_operate_current_timeline( user ) do
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
-    Parser.print_with_color "\n 🔧 Timeline ", :color199
+    Parser.print_with_color " 🔧 Timeline ", :color199
     CalendarUtil.print_current_day()
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color " Notes (new_note) (list_notes) ", :color213
