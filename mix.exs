@@ -14,7 +14,8 @@ defmodule EscriptDemo.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :calendar]
+      mod: {Etoile.Application, []},
+      extra_applications: [:logger, :runtime_tools, :calendar]
     ]
   end
 
@@ -23,9 +24,10 @@ defmodule EscriptDemo.Mixfile do
       {:tzdata, "~> 0.1.7"},
       {:calendar, "~> 0.17.2"},
       {:bunt, "~> 0.1.0"},
-      {:httpoison, "~> 1.0"},
+      {:httpoison, "~> 1.5.0"},
       {:poison, "~> 3.1"},
-      { :elixir_uuid, "~> 1.2" }
+      {:elixir_uuid, "~> 1.2"},
+      {:ex_gram, "~> 0.5.0-rc6"}
     ]
   end
 end

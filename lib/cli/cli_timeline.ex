@@ -43,6 +43,7 @@ defmodule Etoile.Cli.CliTimeline do
     cmd = String.split( cmd, " " )
     case cmd do
       ["start"] ->
+        Etoile.Genserver.get_current()
         CliWorker.display_operate_current_timeline( user )
       ["begin"] ->
         TimelineManager.create( user["username"] )
