@@ -24,6 +24,8 @@ defmodule Etoile.Cli.CliWorker do
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color " 🔧 Timeline ", :color199
     CalendarUtil.print_current_day()
+    TagManager.list_labels( user["username"] )
+    TagManager.list_places( user["username"] )
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color " Notes (nn) New (ln) List ", :color213
     Parser.print_with_color " Budgets (nb) New (lb) List ", :color213
@@ -41,6 +43,7 @@ defmodule Etoile.Cli.CliWorker do
     case cmd do
 			["new"] ->
         TagManager.list_labels( user["username"] )
+        TagManager.list_places( user["username"] )
 				execute_add_task(user["username"])
     		cli(user)
 			["all"] ->
@@ -89,8 +92,9 @@ defmodule Etoile.Cli.CliWorker do
 
 	def execute_add_task( user ) do
     label = receive_command(" Label >> ")
+    place = receive_command(" Place >> ")
   	title = IO.gets(" 🌟 Task Description >>> ") |> Parser.parse_command()
-    TaskManager.create_task( title, label, user )
+    TaskManager.create_task( title, label, place, user )
 	end
 
   def execute_show_tasks( user ), do: TaskManager.display_tasks_per_status( user )
@@ -100,11 +104,11 @@ defmodule Etoile.Cli.CliWorker do
 
   def update_task( ) do
   	task_id =
-			IO.gets("\n Task ID >>> ")
+			IO.gets("   Task ID >>> ")
       |> Parser.parse_command()
     show_update_menu()
     next_status =
-			IO.gets("\n Status >>> ")
+			IO.gets("   Status >>> ")
       |> Parser.parse_command()
       |> get_next_status()
     TaskManager.update_task_status( task_id, next_status )
@@ -112,9 +116,9 @@ defmodule Etoile.Cli.CliWorker do
 
   def show_update_menu() do
 		Parser.print_with_color " Update task: Choose next status ", :color214
-		Parser.print_with_color "-----------", :color214
-		Parser.print_with_color " 1) TODO 2) DOING 3) DONE ", :color87
-		Parser.print_with_color "-----------", :color214
+		Parser.print_with_color " - - - - - - - - - - - - - - - - -" , :color214
+		Parser.print_with_color "   1) TODO   2) DOING   3) DONE   ", :color87
+		Parser.print_with_color " - - - - - - - - - - - - - - - - -" , :color214
   end
 
   def get_next_status( status ) do

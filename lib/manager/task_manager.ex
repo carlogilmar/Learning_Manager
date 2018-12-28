@@ -10,11 +10,11 @@ defmodule Etoile.TaskManager do
   @doing "DOING"
   @done "DONE"
 
-  def create_task( title, label, user ) do
+  def create_task( title, label, place, user ) do
     [{_id, timeline}] = TimelineManager.find_active_timeline( user )
     {_year, _month, day, _week} = CalendarUtil.get_current_date()
     id = Parser.get_uuid()
-    task = %{ id: id, title: title, status: @todo, day: day, week: timeline["week"], year: timeline["year"], user: user, label: label }
+    task = %{ id: id, title: title, status: @todo, day: day, week: timeline["week"], year: timeline["year"], user: user, label: label, place: place }
     RequestManager.post("/tasks.json", task)
   end
 
@@ -51,7 +51,7 @@ defmodule Etoile.TaskManager do
 
   defp display_task( tasks, color ) do
     Enum.each( tasks, fn {_id, task} ->
-     Parser.print_with_color " #{task["id"]} #{task["status"]} <#{task["label"]}> #{task["title"]}", color
+     Parser.print_with_color " #{task["id"]} #{task["status"]} <#{task["label"]}> <#{task["place"]}> #{task["title"]}", color
     end)
   end
 
