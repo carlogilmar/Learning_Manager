@@ -4,6 +4,7 @@ defmodule Etoile.Bot do
   def bot(), do: @bot
   use ExGram.Bot, name: @bot
   alias Etoile.TelegramCommand
+  alias Etoile.BudgetManager
   require Logger
 
   command("timeline")
@@ -13,6 +14,7 @@ defmodule Etoile.Bot do
   command("todo")
   command("done")
   command("wip")
+  command("new_b")
   middleware(ExGram.Middleware.IgnoreUsername)
 
   def handle({:command, :timeline, %{text: username}}, cnt) do
@@ -50,5 +52,11 @@ defmodule Etoile.Bot do
     cnt |> answer( tasks )
   end
 
+  def handle({:command, :new_b, %{text: budget}}, cnt) do
+    [username, price, desc] = String.split(budget, " ")
+    BudgetManager.add_budget( price, desc, username )
+    budgets = TelegramCommand.get_budgets( username )
+    cnt |> answer( budgets )
+  end
 
 end
