@@ -40,39 +40,35 @@ defmodule Etoile.Cli.CliTimeline do
   def receive_command( prompt ), do: IO.gets("  #{prompt}") |> Parser.parse_command()
 
 	def execute( cmd, user ) do
+    cmd = String.split( cmd, " " )
     case cmd do
-      "start" ->
+      ["start"] ->
         CliWorker.display_operate_current_timeline( user )
-      "begin" ->
+      ["begin"] ->
         TimelineManager.create( user["username"] )
         display_menu(user)
-      "timelines" ->
+      ["timelines"] ->
         TimelineManager.get_all_from_user( user["username"] )
         cli(user)
-      "new_label" ->
-        display_label_msg()
-          |> TagManager.add_label( user["username"] )
+      ["new_label", label] ->
+        TagManager.add_label( label, user["username"] )
         cli(user)
-      "show_labels" ->
+      ["show_labels"] ->
         TagManager.list_labels( user["username"] )
         cli(user)
-      "new_place" ->
-        display_place_msg()
-          |> TagManager.add_place( user["username"] )
+      ["new_place", place] ->
+        TagManager.add_place( place, user["username"] )
         cli(user)
-      "show_places" ->
+      ["show_places"] ->
         TagManager.list_places( user["username"] )
         cli(user)
-      "h" ->
+      ["h"] ->
         display_menu(user)
-			"q" ->
+			["q"] ->
 				Parser.print_with_color " \n Learning Manager Goodbye! \n", :color201
       _ ->
     		cli(user)
     end
 	end
-
-  defp display_label_msg(), do: receive_command( " Label name >>> " )
-  defp display_place_msg(), do: receive_command( " Place name >>> " )
 
 end
