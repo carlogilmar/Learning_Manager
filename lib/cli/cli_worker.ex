@@ -25,8 +25,8 @@ defmodule Etoile.Cli.CliWorker do
     Parser.print_with_color " 🔧 Timeline ", :color199
     CalendarUtil.print_current_day()
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
-    Parser.print_with_color " Notes (new_note) (list_notes) ", :color213
-    Parser.print_with_color " Budgets (new_budget) (list_budgets) ", :color213
+    Parser.print_with_color " Notes (nn) New (ln) List ", :color213
+    Parser.print_with_color " Budgets (nb) New (lb) List ", :color213
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color " (new) New task ", :color213
     Parser.print_with_color " Show tasks (all) (todo) (wip) (done) ", :color213
@@ -61,21 +61,21 @@ defmodule Etoile.Cli.CliWorker do
       ["d"] ->
         remove_task()
         cli(user)
-      ["new_note"] ->
+      ["nn"] ->
         TagManager.list_labels( user["username"] )
         note = receive_command(" 🔖 >> ")
         label = receive_command(" Choose label >> ")
         Parser.print_with_color "  - - - - - - - - - - - -  - ", :color228
         NoteManager.save_note( user["username"], note, label)
         cli( user )
-      ["list_notes"] ->
+      ["ln"] ->
         NoteManager.list_notes( user["username"] )
         cli( user )
-      ["new_budget"] ->
-        BudgetManager.add_budget( price, user["username"] )
+      ["nb", price, desc] ->
+        BudgetManager.add_budget( price, desc, user["username"] )
         Parser.print_with_color "  - - - - - - - - - - - -  - ", :color228
         cli( user )
-      ["list_budgets"] ->
+      ["lb"] ->
         BudgetManager.list_budgets( user["username"] )
         cli( user )
       ["h"] ->
