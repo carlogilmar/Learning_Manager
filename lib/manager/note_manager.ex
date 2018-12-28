@@ -12,14 +12,15 @@ defmodule Etoile.NoteManager do
     RequestManager.post("/notes.json", note)
   end
 
-  def list_notes( username ) do
+  def get_notes( username ) do
     [{_id, timeline}] = TimelineManager.find_active_timeline( username )
     RequestManager.get("/notes.json")
       |> Enum.filter( fn {_id, note} -> note["week"] == timeline["week"]
                                  and note["year"] == timeline["year"]
                                  and note["username"] == username  end)
-      |> print_notes()
   end
+
+  def list_notes( username ), do: get_notes( username ) |> print_notes()
 
   defp print_notes( [] ), do: Parser.print_with_color " Not found. ", :color87
   defp print_notes( notes ) do

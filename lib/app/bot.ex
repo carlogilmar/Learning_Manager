@@ -7,10 +7,9 @@ defmodule Etoile.Bot do
   require Logger
 
   command("timeline")
-
   command("budgets")
   command("notes")
-  command("all")
+  command("tasks")
   command("todo")
   command("done")
   command("wip")
@@ -26,24 +25,29 @@ defmodule Etoile.Bot do
     cnt |> answer( budgets )
   end
 
-  def handle({:command, :notes, %{text: _text}}, cnt) do
-    cnt |> answer(" \n Active Timeline \n Here\n Here::")
+  def handle({:command, :notes, %{text: username }}, cnt) do
+    notes = TelegramCommand.get_notes( username )
+    cnt |> answer(notes)
   end
 
-  def handle({:command, :tasks, %{text: _text}}, cnt) do
-    cnt |> answer(" \n Active Timeline \n Here\n Here::")
+  def handle({:command, :tasks, %{text: username}}, cnt) do
+    tasks = TelegramCommand.get_tasks( username )
+    cnt |> answer( tasks )
   end
 
-  def handle({:command, :todo, %{text: _text}}, cnt) do
-    cnt |> answer(" \n Active Timeline \n Here\n Here::")
+  def handle({:command, :todo, %{text: username}}, cnt) do
+    tasks = TelegramCommand.get_todo( username )
+    cnt |> answer( tasks )
   end
 
-  def handle({:command, :wip, %{text: _text}}, cnt) do
-    cnt |> answer(" \n Active Timeline \n Here\n Here::")
+  def handle({:command, :wip, %{text: username}}, cnt) do
+    tasks = TelegramCommand.get_wip( username )
+    cnt |> answer( tasks )
   end
 
-  def handle({:command, :done, %{text: _text}}, cnt) do
-    cnt |> answer(" \n Active Timeline \n Here\n Here::")
+  def handle({:command, :done, %{text: username}}, cnt) do
+    tasks = TelegramCommand.get_done( username )
+    cnt |> answer( tasks )
   end
 
 
