@@ -9,6 +9,7 @@ defmodule Etoile.Cli.CliTimeline do
   def cli( user ), do: execute_command( user )
 
   def display_menu( user ) do
+		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " 🏠 HOME ", :color75
 		Parser.print_with_color " Welcome #{user["username"]}", :color51
     CalendarUtil.print_current_day()
@@ -17,15 +18,14 @@ defmodule Etoile.Cli.CliTimeline do
     active = TimelineManager.find_active_timeline( user["username"] )
     case active do
       [] ->
-        Parser.print_with_color " 2. Add current week as timeline ", :color228
+        Parser.print_with_color " (begin) Add current week as timeline ", :color228
       _active ->
-        Parser.print_with_color " 1. Start 🔧 ", :color228
+        Parser.print_with_color " (start) Go to timeline home 🔧 ", :color228
     end
 		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " 3. List timelines stored ", :color228
-		Parser.print_with_color "-----------------------------------------", :color87
-		Parser.print_with_color " Labels (5) New (6) List ", :color228
-		Parser.print_with_color " Places (7) New (8) List ", :color228
+		Parser.print_with_color " (timelines) List timelines stored ", :color228
+		Parser.print_with_color " Labels (new_label) New (show_labels) List ", :color228
+		Parser.print_with_color " Places (new_place) New (show_places) List ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
     Parser.print_with_color " (h) Help (q) Quit ", :color87
 		cli( user )
@@ -41,26 +41,26 @@ defmodule Etoile.Cli.CliTimeline do
 
 	def execute( cmd, user ) do
     case cmd do
-      "1" ->
+      "start" ->
         CliWorker.display_operate_current_timeline( user )
-      "2" ->
+      "begin" ->
         TimelineManager.create( user["username"] )
         display_menu(user)
-      "3" ->
+      "timelines" ->
         TimelineManager.get_all_from_user( user["username"] )
         cli(user)
-      "5" ->
+      "new_label" ->
         display_label_msg()
           |> TagManager.add_label( user["username"] )
         cli(user)
-      "6" ->
+      "show_labels" ->
         TagManager.list_labels( user["username"] )
         cli(user)
-      "7" ->
+      "new_place" ->
         display_place_msg()
           |> TagManager.add_place( user["username"] )
         cli(user)
-      "8" ->
+      "show_places" ->
         TagManager.list_places( user["username"] )
         cli(user)
       "h" ->

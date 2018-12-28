@@ -21,16 +21,17 @@ defmodule Etoile.Cli.CliWorker do
   def receive_command( prompt ), do: IO.gets("  #{prompt}") |> Parser.parse_command()
 
   def display_operate_current_timeline( user ) do
+    Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color "\n 🔧 Timeline ", :color199
     CalendarUtil.print_current_day()
-    Parser.print_with_color " - - - - - - - - - - - -  - ", :color51
-    Parser.print_with_color " Notes (1) New (2) List ", :color213
-    Parser.print_with_color " Budgets (3) New (4) List ", :color213
-    Parser.print_with_color " - - - - - - - - - - - -  - ", :color51
-    Parser.print_with_color " - Add task (new)", :color213
-    Parser.print_with_color " - Show tasks (all) (todo) (wip) (done) ", :color213
-    Parser.print_with_color " (u) Update task (d) delete task ", :color213
-    Parser.print_with_color " - - - - - - - - - - - -  - ", :color51
+    Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
+    Parser.print_with_color " Notes (new_note) (list_notes) ", :color213
+    Parser.print_with_color " Budgets (new_budget) (list_budgets) ", :color213
+    Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
+    Parser.print_with_color " (new) New task ", :color213
+    Parser.print_with_color " Show tasks (all) (todo) (wip) (done) ", :color213
+    Parser.print_with_color " (upd) Update task (del) delete task ", :color213
+    Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color " (h) Help (q) Back", :color87
     execute_command( user )
   end
@@ -59,22 +60,22 @@ defmodule Etoile.Cli.CliWorker do
       "d" ->
         remove_task()
         cli(user)
-      "1" ->
+      "new_note" ->
         TagManager.list_labels( user["username"] )
         note = receive_command(" 🔖 >> ")
         label = receive_command(" Choose label >> ")
         Parser.print_with_color "  - - - - - - - - - - - -  - ", :color52
         NoteManager.save_note( user["username"], note, label)
         cli( user )
-      "2" ->
+      "list_notes" ->
         NoteManager.list_notes( user["username"] )
         cli( user )
-      "3" ->
+      "new_budget" ->
         budget = receive_command(" 💵 >> ")
         BudgetManager.add_budget( budget, user["username"] )
         Parser.print_with_color "  - - - - - - - - - - - -  - ", :color52
         cli( user )
-      "4" ->
+      "list_budgets" ->
         BudgetManager.list_budgets( user["username"] )
         cli( user )
       "h" ->
