@@ -24,6 +24,7 @@ defmodule Etoile.Cli.CliWorker do
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228
     Parser.print_with_color " 🔧 Timeline ", :color199
     CalendarUtil.print_current_day()
+    TimelineManager.validate_current_timeline( user["username"] )
     TagManager.list_labels( user["username"] )
     TagManager.list_places( user["username"] )
     Parser.print_with_color " - - - - - - - - - - - - - - - - - - -", :color228

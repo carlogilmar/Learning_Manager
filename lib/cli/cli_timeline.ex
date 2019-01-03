@@ -12,17 +12,14 @@ defmodule Etoile.Cli.CliTimeline do
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " 🏠 HOME ", :color75
 		Parser.print_with_color " Welcome #{user["username"]}", :color51
-
     CalendarUtil.print_current_day()
-    TimelineManager.print_active_timeline( user["username"] )
-		Parser.print_with_color "-----------------------------------------", :color87
-    TimelineManager.validate_current_timeline( user["username"] )
 		Parser.print_with_color "-----------------------------------------", :color87
     active = TimelineManager.find_active_timeline( user["username"] )
     case active do
       [] ->
-        Parser.print_with_color " (begin) Add current week as timeline ", :color228
+        Parser.print_with_color " (begin) Start to use Learning Manager ", :color228
       _active ->
+        TimelineManager.validate_current_timeline( user["username"] )
         Parser.print_with_color " (start) Go to timeline home 🔧 ", :color228
     end
 		Parser.print_with_color "-----------------------------------------", :color87
