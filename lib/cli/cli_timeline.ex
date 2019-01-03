@@ -24,6 +24,7 @@ defmodule Etoile.Cli.CliTimeline do
     end
 		Parser.print_with_color "-----------------------------------------", :color87
 		Parser.print_with_color " (timelines) List timelines stored ", :color228
+		Parser.print_with_color " (timeline --week --year) Show timeline stored ", :color228
 		Parser.print_with_color " Labels (new_label) New (show_labels) List ", :color228
 		Parser.print_with_color " Places (new_place) New (show_places) List ", :color228
 		Parser.print_with_color "-----------------------------------------", :color87
@@ -48,7 +49,10 @@ defmodule Etoile.Cli.CliTimeline do
         TimelineManager.create( user["username"] )
         display_menu(user)
       ["timelines"] ->
-        TimelineManager.get_all_from_user( user["username"] )
+        TimelineManager.display_all_from_user( user["username"] )
+        cli(user)
+      ["timeline", tweek, tyear] ->
+        TimelineManager.show_timeline( tweek, tyear, user["username"] )
         cli(user)
       ["new_label", label] ->
         TagManager.add_label( label, user["username"] )

@@ -51,21 +51,26 @@ defmodule Etoile.TimelineManager do
     end
   end
 
+  def display_all_from_user( username ) do
+    timelines = get_all_from_user( username )
+    case timelines do
+      :empty ->
+        Parser.print_with_color "[ Add a timeline for start to use it. ]", :color228
+      timelines ->
+        Enum.each( timelines, fn {_id, timeline} ->
+          Parser.print_with_color " - Timeline Week #{timeline["week"]} Year #{timeline["year"]}", :color229
+        end)
+    end
+  end
+
   def get_all_from_user( username ) do
     res =
       RequestManager.get("/timelines.json")
         |> Enum.filter( fn {_id, timeline} -> timeline["username"] == username end )
     case res do
-      nil ->
-        Parser.print_with_color " [ You don't have timelines. ]", :color228
-      [] ->
-		    Parser.print_with_color " [ Add a timeline for start to use it. ]", :color228
-      timelines ->
-        timelines
-          |> Enum.sort_by( fn {_id, timeline} -> timeline["week"]  end)
-          |> Enum.each( fn {_id, timeline} ->
-            Parser.print_with_color " - Timeline Week #{timeline["week"]} Year #{timeline["year"]}", :color229
-          end)
+      nil -> :empty
+      [] -> :empty
+      timelines -> timelines |> Enum.sort_by( fn {_id, timeline} -> timeline["week"]  end)
     end
   end
 
@@ -82,6 +87,33 @@ defmodule Etoile.TimelineManager do
         create( username )
         validate_current_timeline( username )
         Parser.print_with_color " [ New Timeline Added ] ", :color229
+    end
+  end
+
+  def show_timeline(week, year, username) do
+    week = String.to_integer( week )
+    year = String.to_integer( year )
+    timelines = get_all_from_user( username )
+    case timelines do
+      :empty ->
+        Parser.print_with_color "[ Timelines not found... ]", :color229
+      timelines ->
+        find_timeline_in_user_history( timelines, week, year )
+        |> show_timeline_record()
+    end
+  end
+
+
+  def find_timeline_in_user_history( timelines, week, year ) do
+    Enum.filter( timelines, fn { _id, timeline} -> timeline["week"] == 52 and timeline["year"] == 2018 end)
+  end
+
+  def show_timeline_record( timeline ) do
+    case timeline do
+      [] -> Parser.print_with_color "[ Timeline not found. ]", :color228
+      [{_id, timeline}] ->
+        IO.puts "Encontreamos!!!!!"
+        IO.inspect timeline
     end
   end
 
