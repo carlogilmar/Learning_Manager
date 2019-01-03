@@ -75,12 +75,13 @@ defmodule Etoile.TimelineManager do
     week_validation = { current_week, current_year } == { active_timeline["week"], active_timeline["year"]}
     case week_validation do
       true ->
-        IO.puts "ya tienes timeline!!!!"
+        CalendarUtil.print_current_week( active_timeline["year"], active_timeline["week"] )
       false ->
         active_timeline = Map.put( active_timeline, "status", "INACTIVE" )
         RequestManager.put( "/timelines/#{id_in_api}.json", active_timeline)
         create( username )
         validate_current_timeline( username )
+        Parser.print_with_color " [ New Timeline Added ] ", :color229
     end
   end
 
