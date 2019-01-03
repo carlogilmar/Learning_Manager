@@ -69,4 +69,19 @@ defmodule Etoile.TimelineManager do
     end
   end
 
+  def validate_current_timeline( username ) do
+    {current_year, _month, _day, current_week} = CalendarUtil.get_current_date()
+    [{id_in_api, active_timeline}] = find_active_timeline( username )
+    week_validation = { current_week, current_year } == { active_timeline["week"], active_timeline["year"]}
+    case week_validation do
+      true ->
+        IO.puts "ya tienes timeline!!!!"
+      false ->
+        active_timeline = Map.put( active_timeline, "status", "INACTIVE" )
+        RequestManager.put( "/timelines/#{id_in_api}.json", active_timeline)
+        create( username )
+        validate_current_timeline( username )
+    end
+  end
+
 end
