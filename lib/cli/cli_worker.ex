@@ -2,6 +2,7 @@ defmodule Etoile.Cli.CliWorker do
 
   alias Etoile.Cli.CliTimeline
   alias Etoile.TagManager
+  alias Etoile.TimelineManager
   alias Etoile.NoteManager
   alias Etoile.BudgetManager
   alias Etoile.TaskManager
