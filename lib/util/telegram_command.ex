@@ -15,7 +15,7 @@ defmodule Etoile.TelegramCommand do
 
   def get_budgets( "" ), do: " Learning Manager :: Adding your current username "
   def get_budgets( username ) do
-    budgets = BudgetManager.get_budgets( username )
+    budgets = BudgetManager.get_budgets_from_active_timeline( username )
     total = BudgetManager.get_total( budgets )
     lines = for {_id, budget} <- budgets, do: "#{budget["day"]}/#{budget["week"]} #{budget["price"]} #{budget["description"]}"
     header = [" :: Budgets Stored ::"]
