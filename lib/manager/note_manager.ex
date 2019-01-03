@@ -20,10 +20,19 @@ defmodule Etoile.NoteManager do
                                  and note["username"] == username  end)
   end
 
+  def get_notes( username, week, year ) do
+    RequestManager.get("/notes.json")
+      |> Enum.filter( fn {_id, note} -> note["week"] == week
+                                 and note["year"] == year
+                                 and note["username"] == username  end)
+  end
+
   def list_notes( username ), do: get_notes( username ) |> print_notes()
 
-  defp print_notes( [] ), do: Parser.print_with_color " Not found. ", :color87
-  defp print_notes( notes ) do
+  def print_notes( [] ), do: Parser.print_with_color " Notes Not found. ", :color87
+  def print_notes( notes ) do
+    Parser.print_with_color " ::: Notes Stored ::: ", :color228
+    Parser.print_with_color " ---------------------- ", :color228
     Enum.each( notes, fn {_id, note} ->
       Parser.print_with_color " <#{note["label"]}> #{note["note"]}", :color87
     end)

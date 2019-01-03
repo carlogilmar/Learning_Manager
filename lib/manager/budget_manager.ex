@@ -13,7 +13,7 @@ defmodule Etoile.BudgetManager do
     RequestManager.post("/budgets.json", budget)
   end
 
-  def get_budgets( username ) do
+  def get_budgets_from_active_timeline( username ) do
     [{_id, timeline}] = TimelineManager.find_active_timeline( username )
     RequestManager.get("/budgets.json")
       |> Enum.filter( fn {_id, budget} -> budget["week"] == timeline["week"]
@@ -21,10 +21,17 @@ defmodule Etoile.BudgetManager do
                                  and budget["username"] == username  end)
   end
 
-  def list_budgets( username ), do: get_budgets(username) |> print_budgets()
+  def get_budgets( username, week, year ) do
+    RequestManager.get("/budgets.json")
+      |> Enum.filter( fn {_id, budget} -> budget["week"] == week
+                                      and budget["year"] == year
+                                      and budget["username"] == username  end)
+  end
 
-  defp print_budgets( [] ), do: Parser.print_with_color " Not found. ", :color228
-  defp print_budgets( budgets ) do
+  def list_budgets( username ), do: get_budgets_from_active_timeline(username) |> print_budgets()
+
+  def print_budgets( [] ), do: Parser.print_with_color " Not found. ", :color228
+  def print_budgets( budgets ) do
     Parser.print_with_color " ::: Budgets Stored ::: ", :color228
     Parser.print_with_color " ---------------------- ", :color228
     Enum.each( budgets, fn {_id, budget} ->

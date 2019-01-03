@@ -2,6 +2,7 @@ defmodule Etoile.TimelineManager do
 
   alias Etoile.Models.Timeline
   alias Etoile.RequestManager
+  alias Etoile.HistoryManager
   alias Etoile.CalendarUtil
   alias Etoile.Parser
 
@@ -99,7 +100,7 @@ defmodule Etoile.TimelineManager do
         Parser.print_with_color "[ Timelines not found... ]", :color229
       timelines ->
         find_timeline_in_user_history( timelines, week, year )
-        |> show_timeline_record()
+        |> show_timeline_record( username )
     end
   end
 
@@ -108,12 +109,11 @@ defmodule Etoile.TimelineManager do
     Enum.filter( timelines, fn { _id, timeline} -> timeline["week"] == 52 and timeline["year"] == 2018 end)
   end
 
-  def show_timeline_record( timeline ) do
+  def show_timeline_record( timeline, username ) do
     case timeline do
       [] -> Parser.print_with_color "[ Timeline not found. ]", :color228
       [{_id, timeline}] ->
-        IO.puts "Encontreamos!!!!!"
-        IO.inspect timeline
+        HistoryManager.display_timeline_history( timeline["week"], timeline["year"], username )
     end
   end
 
