@@ -1,6 +1,5 @@
 defmodule Etoile.TaskManager do
 
-  alias Etoile.Calendar
   alias Etoile.Parser
   alias Etoile.RequestManager
   alias Etoile.TimelineManager
@@ -71,6 +70,20 @@ defmodule Etoile.TaskManager do
       RequestManager.get("/tasks.json")
         |> Enum.filter( fn {_id, task} -> task["id"] == id end)
     task
+  end
+
+  def display_tasks_history( user, week, year ) do
+    tasks = RequestManager.get("/tasks.json")
+    user_tasks = Enum.filter( tasks, fn {_id, task} ->
+                                                      task["user"] == user and
+                                                      task["week"] == week and
+                                                      task["year"] == year end)
+    todos = get_status( user_tasks, @todo )
+    doing = get_status( user_tasks, @doing )
+    done = get_status( user_tasks, @done )
+    display_task( todos, :color204 )
+    display_task( doing, :color229 )
+    display_task( done, :color158 )
   end
 
 end
